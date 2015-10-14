@@ -320,6 +320,9 @@ var jsPDF = (function(global) {
 			out('>>');
 			out('endobj');
 		},
+		putJpFont = function(jpFont){
+			// for putting Japanese Font			
+		}
 		putFont = function(font) {
 			font.objectNumber = newObject();
 			out('<</BaseFont/' + font.PostScriptName + '/Type/Font');
@@ -401,7 +404,7 @@ var jsPDF = (function(global) {
 		 * @property encoding {Object} Encoding_name-to-Font_metrics_object mapping.
 		 * @name FontObject
 		 */
-		addFont = function(PostScriptName, fontName, fontStyle, encoding) {
+		addFont = function(PostScriptName, fontName, fontStyle, encoding, fontType) {
 			var fontKey = 'F' + (Object.keys(fonts).length + 1).toString(10),
 			// This is FontObject
 			font = fonts[fontKey] = {
