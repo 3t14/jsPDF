@@ -1,7 +1,7 @@
 /** @preserve
  * jsPDF - PDF Document creation from JavaScript
- * Version 1.1.287-git Built on 2015-10-14T13:32
- *                           CommitID 65e4f30054
+ * Version 1.1.287-git Built on 2015-10-14T21:16
+ *                           CommitID c1fa7b23da
  *
  * Copyright (c) 2010-2014 James Hall <james@parall.ax>, https://github.com/MrRio/jsPDF
  *               2010 Aaron Spike, https://github.com/acspike
@@ -320,17 +320,33 @@ var jsPDF = (function(global) {
 			out('>>');
 			out('endobj');
 		},
-		putJpFont = function(jpFont){
-			// for putting Japanese Font			
-		}
 		putFont = function(font) {
 			font.objectNumber = newObject();
 			out('<</BaseFont/' + font.PostScriptName + '/Type/Font');
+			out('/Subtype/' + font.fontType + '\n');
 			if (typeof font.encoding === 'string') {
 				out('/Encoding/' + font.encoding);
 			}
-			out('/Subtype/Type1>>');
+			
+			switch (font.fontType) {
+			case 'Type0':
+				// DescendantFonts
+				console.log(font.type2Font.objectNumber);
+				out('/DescendantFonts [ ' + font.type2Font.objectNumber + ' 0 R ]\n');
+				break;
+			case 'CIDFontType2':
+				// FontDescriptor
+				//out('/FontD ' + font.descendantFonts);	
+				break;
+			case 'FontDescriptor':
+				// FontName, Flags, FontBBox, MissingWidth, StemV, StemH, 
+				// ItalicAngle, CapHeight, Xheight, Ascent, Descent, Leading, 
+				// MaxWidth, AvgWidth, Style
+				break;
+			}
+			out('>>');
 			out('endobj');
+
 		},
 		putFonts = function() {
 			for (var fontKey in fonts) {
@@ -413,6 +429,7 @@ var jsPDF = (function(global) {
 				'fontName'       : fontName,
 				'fontStyle'      : fontStyle,
 				'encoding'       : encoding,
+				'fontType'		 : fontType,
 				'metadata'       : {}
 			};
 			addToFontDictionary(fontKey, fontName, fontStyle);
@@ -421,7 +438,26 @@ var jsPDF = (function(global) {
 			return fontKey;
 		},
 		addFonts = function() {
+			// FontDescriptor
 
+			
+			// CIDFontType2
+			var type2FontKey = addFont('Osaka', 'msgothic', NORMAL, 'UniJIS-UTF16-H', 'CIDFontType2');
+			addToFontDictionary(type2FontKey, 'msgothic', 'normal' || ''); 
+			var type2Font = fonts[type2FontKey];
+
+			// Type0 Japanese fonts
+			var type0FontKey = addFont('Osaka', 'msgothic', NORMAL, 'UniJIS-UTF16-H', 'Type0');
+			// add the type0 specific properties
+			var type0Font = fonts[type0FontKey];
+
+			// make a relationship with typeFont2
+			type0Font.type2Font = type2Font;
+			//type0Font.descendantFonts = '[' + type2Font.objectNumber + ' 0 R]'; 
+			
+			addToFontDictionary(type0FontKey, 'msgothic', 'normal' || '');
+
+			// Type1 fonts
 			var HELVETICA     = "helvetica",
 				TIMES         = "times",
 				COURIER       = "courier",
@@ -450,12 +486,16 @@ var jsPDF = (function(global) {
 						standardFonts[i][0],
 						standardFonts[i][1],
 						standardFonts[i][2],
-						encoding);
+						encoding,
+						'Type1');
 
 				// adding aliases for standard fonts, this time matching the capitalization
 				var parts = standardFonts[i][0].split('-');
 				addToFontDictionary(fontKey, parts[0], parts[1] || '');
 			}
+
+			
+
 			events.publish('addFonts', { fonts : fonts, dictionary : fontmap });
 		},
 		SAFE = function __safeCall(fn) {
@@ -1295,6 +1335,25 @@ var jsPDF = (function(global) {
 //				this._runningPageHeight = y -  (activeFontSize * 1.7 / k);
 //				curY = f2(pageHeight - activeFontSize * 1.7 /k);
 //			}
+			activeFontKey = 'F2';
+
+			
+			function hexEncode(st) {
+				//var st = utf8to16(st);
+				var result = '';
+				console.log("st.length = " + st.length);
+				
+				for ( var i = 0; i < st.length; i++ ) {
+					console.log(st.charCodeAt(i));
+					var hex = st.charCodeAt(i).toString(16);
+					result += ('000' + hex).slice(-4);
+					console.log(result);
+				}
+				return result;
+			};
+
+			console.log(text);
+			console.log("hexEncode()= "+hexEncode(text));
 
 			out(
 				'BT\n/' +
@@ -1302,9 +1361,13 @@ var jsPDF = (function(global) {
 				(activeFontSize * lineHeightProportion) + ' TL\n' +  // line spacing
 				strokeOption +// stroke option
 				textColor +
-				'\n' + xtra + f2(x * k) + ' ' + curY + ' ' + mode + '\n(' +
-				text +
-				') Tj\nET');
+				// '\n' + xtra + f2(x * k) + ' ' + curY + ' ' + mode + '\n(' +
+				// text +
+				// ') Tj\nET');
+				'\n' + xtra + f2(x * k) + ' ' + curY + ' ' + mode + '\n' +
+				'<' + hexEncode(text) + '>' +
+				' Tj\nET');
+
 
 			if (todo) {
 				//this.text( todo, x, activeFontSize * 1.7 / k);
@@ -1635,6 +1698,7 @@ var jsPDF = (function(global) {
 		 */
 		API.setFont = function(fontName, fontStyle) {
 			activeFontKey = getFont(fontName, fontStyle);
+			
 			// if font is not found, the above line blows up and we never go further
 			return this;
 		};
@@ -2004,7 +2068,7 @@ var jsPDF = (function(global) {
 		//////////////////////////////////////////////////////
 		// Add the first page automatically
 		addFonts();
-		activeFontKey = 'F1';
+		activeFontKey = 'F2';
 		_addPage(format, orientation);
 
 		events.publish('initialized');
@@ -2038,7 +2102,7 @@ var jsPDF = (function(global) {
 	 * pdfdoc.mymethod() // <- !!!!!!
 	 */
 	jsPDF.API = {events:[]};
-	jsPDF.version = "1.1.287-debug 2015-10-14T13:32:root";
+	jsPDF.version = "1.1.287-debug 2015-10-14T21:16:root";
 
 	if (typeof define === 'function' && define.amd) {
 		define('jsPDF', function() {
