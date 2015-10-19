@@ -1182,6 +1182,8 @@ var jsPDF = (function(global) {
 				return pdfEscape(s, flags);
 			}
 
+			
+
 			// Pre-August-2012 the order of arguments was function(x, y, text, flags)
 			// in effort to make all calls have similar signature like
 			//   function(data, coordinates... , miscellaneous)
@@ -1227,6 +1229,10 @@ var jsPDF = (function(global) {
 				xtra = [f2(c), f2(s), f2(s * -1), f2(c), ''].join(" ");
 				mode = 'Tm';
 			}
+
+			
+
+
 			flags = flags || {};
 			if (!('noBOM' in flags))
 				flags.noBOM = true;
@@ -1251,16 +1257,20 @@ var jsPDF = (function(global) {
 			if (typeof this._runningPageHeight === 'undefined'){
 				this._runningPageHeight = 0;
 			}
-
+			
 			if (typeof text === 'string') {
 				text = ESC(text);
 			} else if (text instanceof Array) {
+				
 				// we don't want to destroy  original text array, so cloning it
 				var sa = text.concat(), da = [], len = sa.length;
 				// we do array.join('text that must not be PDFescaped")
 				// thus, pdfEscape each component separately
 				while (len--) {
-					da.push(ESC(sa.shift()));
+					// for type1 font 
+					//da.push(ESC(sa.shift()));
+					// for type0 Japanese font
+					da.push((sa.shift()));
 				}
 				var linesLeft = Math.ceil((pageHeight - y - this._runningPageHeight) * k / (activeFontSize * lineHeightProportion));
 				if (0 <= linesLeft && linesLeft < da.length + 1) {
@@ -1317,7 +1327,6 @@ var jsPDF = (function(global) {
 			// Thus, there is NO useful, *reliable* concept of "default" font for a page.
 			// The fact that "default" (reuse font used before) font worked before in basic cases is an accident
 			// - readers dealing smartly with brokenness of jsPDF's markup.
-
 			var curY;
 
 			if (todo){
@@ -1339,9 +1348,7 @@ var jsPDF = (function(global) {
 
 			
 			function hexEncode(st) {
-				//var st = utf8to16(st);
 				var result = '';
-				console.log("st.length = " + st.length);
 				
 				for ( var i = 0; i < st.length; i++ ) {
 					console.log(st.charCodeAt(i));
@@ -1352,8 +1359,6 @@ var jsPDF = (function(global) {
 				return result;
 			};
 
-			console.log(text);
-			console.log("hexEncode()= "+hexEncode(text));
 
 			out(
 				'BT\n/' +

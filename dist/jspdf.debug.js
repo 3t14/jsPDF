@@ -1,7 +1,7 @@
 /** @preserve
  * jsPDF - PDF Document creation from JavaScript
- * Version 1.1.287-git Built on 2015-10-14T21:16
- *                           CommitID c1fa7b23da
+ * Version 1.1.292-git Built on 2015-10-19T11:34
+ *                           CommitID d4b580c288
  *
  * Copyright (c) 2010-2014 James Hall <james@parall.ax>, https://github.com/MrRio/jsPDF
  *               2010 Aaron Spike, https://github.com/acspike
@@ -1182,6 +1182,8 @@ var jsPDF = (function(global) {
 				return pdfEscape(s, flags);
 			}
 
+			
+
 			// Pre-August-2012 the order of arguments was function(x, y, text, flags)
 			// in effort to make all calls have similar signature like
 			//   function(data, coordinates... , miscellaneous)
@@ -1227,6 +1229,10 @@ var jsPDF = (function(global) {
 				xtra = [f2(c), f2(s), f2(s * -1), f2(c), ''].join(" ");
 				mode = 'Tm';
 			}
+
+			
+
+
 			flags = flags || {};
 			if (!('noBOM' in flags))
 				flags.noBOM = true;
@@ -1251,16 +1257,18 @@ var jsPDF = (function(global) {
 			if (typeof this._runningPageHeight === 'undefined'){
 				this._runningPageHeight = 0;
 			}
-
+			
 			if (typeof text === 'string') {
 				text = ESC(text);
 			} else if (text instanceof Array) {
+				
 				// we don't want to destroy  original text array, so cloning it
 				var sa = text.concat(), da = [], len = sa.length;
 				// we do array.join('text that must not be PDFescaped")
 				// thus, pdfEscape each component separately
 				while (len--) {
-					da.push(ESC(sa.shift()));
+					//da.push(ESC(sa.shift()));
+					da.push((sa.shift()));
 				}
 				var linesLeft = Math.ceil((pageHeight - y - this._runningPageHeight) * k / (activeFontSize * lineHeightProportion));
 				if (0 <= linesLeft && linesLeft < da.length + 1) {
@@ -1317,6 +1325,9 @@ var jsPDF = (function(global) {
 			// Thus, there is NO useful, *reliable* concept of "default" font for a page.
 			// The fact that "default" (reuse font used before) font worked before in basic cases is an accident
 			// - readers dealing smartly with brokenness of jsPDF's markup.
+			console.log("Step3");
+			console.log("Text="+text);
+			console.log("hexEncode()= "+hexEncode(text));
 
 			var curY;
 
@@ -2102,7 +2113,7 @@ var jsPDF = (function(global) {
 	 * pdfdoc.mymethod() // <- !!!!!!
 	 */
 	jsPDF.API = {events:[]};
-	jsPDF.version = "1.1.287-debug 2015-10-14T21:16:root";
+	jsPDF.version = "1.1.292-debug 2015-10-19T11:34:root";
 
 	if (typeof define === 'function' && define.amd) {
 		define('jsPDF', function() {
@@ -7340,7 +7351,7 @@ jsPDFAPI.putTotalPages = function(pageExpression) {
  *
  * By Eli Grey, http://eligrey.com
  * By Devin Samarin, https://github.com/dsamarin
- * License: X11/MIT
+ * License: MIT
  *   See https://github.com/eligrey/Blob.js/blob/master/LICENSE.md
  */
 
@@ -7550,7 +7561,7 @@ jsPDFAPI.putTotalPages = function(pageExpression) {
  * 1.1.20151003
  *
  * By Eli Grey, http://eligrey.com
- * License: X11/MIT
+ * License: MIT
  *   See https://github.com/eligrey/FileSaver.js/blob/master/LICENSE.md
  */
 
