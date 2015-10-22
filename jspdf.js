@@ -323,8 +323,10 @@ var jsPDF = (function(global) {
 		putFont = function(font) {
 			font.objectNumber = newObject();
 			out('<</BaseFont/' + font.PostScriptName + '/Type/Font');
-			out('/Subtype/' + font.fontType + '\n');
+			out('/Subtype/' + font.fontType);
 			if (typeof font.encoding === 'string') {
+				// 'WinAnsiEncoding' will bring errors when Acrobat Reader open's the file.
+				if (font.encoding == 'WinAnsiEncoding') font.encoding = 'StandardEncoding';
 				out('/Encoding/' + font.encoding);
 			}
 			
@@ -332,13 +334,24 @@ var jsPDF = (function(global) {
 			case 'Type0':
 				// DescendantFonts
 				console.log(font.type2Font.objectNumber);
-				out('/DescendantFonts [ ' + font.type2Font.objectNumber + ' 0 R ]\n');
+				out('/DescendantFonts [ ' + font.type2Font.objectNumber + ' 0 R ]');
 				break;
 			case 'CIDFontType2':
 				// FontDescriptor
-				//out('/FontD ' + font.descendantFonts);	
+				
+				out('/FontDescriptor [ ' + font.fontDescriptor.objectNumber + ' 0 R ]');
+				for (var key in font.attrs){
+					console.log('key = '+key+', value = '+font.attrs[key]);
+					out('/'+key+' '+font.attrs[key]);
+				};
 				break;
 			case 'FontDescriptor':
+				console.log(font.attrs);
+				for (var key in font.attrs){
+					console.log('key = '+key+', value = '+font.attrs[key]);
+					out('/'+key+' '+font.attrs[key]);
+				};
+
 				// FontName, Flags, FontBBox, MissingWidth, StemV, StemH, 
 				// ItalicAngle, CapHeight, Xheight, Ascent, Descent, Leading, 
 				// MaxWidth, AvgWidth, Style
@@ -420,7 +433,7 @@ var jsPDF = (function(global) {
 		 * @property encoding {Object} Encoding_name-to-Font_metrics_object mapping.
 		 * @name FontObject
 		 */
-		addFont = function(PostScriptName, fontName, fontStyle, encoding, fontType) {
+		addFont = function(PostScriptName, fontName, fontStyle, encoding, fontType, attrs) {
 			var fontKey = 'F' + (Object.keys(fonts).length + 1).toString(10),
 			// This is FontObject
 			font = fonts[fontKey] = {
@@ -430,7 +443,8 @@ var jsPDF = (function(global) {
 				'fontStyle'      : fontStyle,
 				'encoding'       : encoding,
 				'fontType'		 : fontType,
-				'metadata'       : {}
+				'metadata'		 : {},
+				'attrs'     	 : attrs || {}
 			};
 			addToFontDictionary(fontKey, fontName, fontStyle);
 			events.publish('addFont', font);
@@ -439,23 +453,88 @@ var jsPDF = (function(global) {
 		},
 		addFonts = function() {
 			// FontDescriptor
+			var attrs1 = {
+				'FontName':'Osaka',
+				'Flags':4,
+				'FontBBox': '[-55 -227 1023 1000]',
+				'MissingWidth': 507,
+				'StemV': 98,
+				'StemH': 78,
+				'ItalicAngle': 0,
+				'CapHeight': 781,
+				'XHeight': 559,
+				'Ascent': 853,
+				'Descent': -250,
+				'Leading': 0,
+				'MaxWidth': 1031,
+				'AvgWidth': 507,
+				'Style': '<< /Panose <0805020B0609000000000000> >>'};
+				
+			var fontDescriptorKey = addFont('Osaka', 'osaka', NORMAL, false, 'FontDescriptor', attrs1);
+			addToFontDictionary(fontDescriptorKey, 'osaka', 'normal'||'');
+			var fontDescriptor = fonts[fontDescriptorKey];
 
-			
 			// CIDFontType2
-			var type2FontKey = addFont('Osaka', 'msgothic', NORMAL, 'UniJIS-UTF16-H', 'CIDFontType2');
-			addToFontDictionary(type2FontKey, 'msgothic', 'normal' || ''); 
+			var attrs2 = {
+				'CIDSystemInfo':'<<\n'
+					+' /Registry (Adobe)\n'
+					+' /Ordering (Japan1)\n'
+					+' /Supplement 6\n'
+					+'>>',
+				'DW':1000,
+/*
+/W [
+ 1 1 300
+ % abcdefg
+ 66 [600 600 500 600 600 350 600]
+ % hijklmn
+ 73 [600 300 350 550 250 900 550]
+ % opqrstu
+ 80 [600 600 600 400 500 450 550]
+ % vwxyz
+ 87 [600 800 500 550 550]
+ % ABCDEFG
+ 34 [700 600 650 700 600 550 650]
+ % HIJKLMN
+ 41 [700 300 550 700 650 800 700]
+ % OPQRSTU
+ 48 [700 650 700 700 700 700 700]
+ % VWXYZ
+ 55 [700 900 650 650 650]
+ 0 231 640
+]
+*/
+				'W': '[\n'
+					+' 1 1 300\n'
+					+' 14 14 200\n'
+					+' 66 [600 600 500 600 600 350 600]\n'
+					+' 73 [600 300 350 550 250 900 550]\n'
+					+' 80 [600 600 600 400 500 450 550]\n'
+					+' 87 [600 800 500 550 550]\n'
+					+' 34 [700 600 650 700 600 550 650]\n'
+					+' 41 [700 300 550 700 650 800 700]\n'
+					+' 48 [700 650 700 700 700 700 700]\n'
+					+' 55 [700 900 650 650 650]\n'
+					+' 0 231 640\n'
+					+']'							
+				};
+			
+
+			var type2FontKey = addFont('Osaka', 'osaka', NORMAL, false, 'CIDFontType2', attrs2);
+			addToFontDictionary(type2FontKey, 'osaka', 'normal' || ''); 
 			var type2Font = fonts[type2FontKey];
+			type2Font.fontDescriptor = fontDescriptor;
 
 			// Type0 Japanese fonts
-			var type0FontKey = addFont('Osaka', 'msgothic', NORMAL, 'UniJIS-UTF16-H', 'Type0');
+			var type0FontKey = addFont('Osaka', 'osaka', NORMAL, 'UniJIS-UTF16-H', 'Type0');
 			// add the type0 specific properties
 			var type0Font = fonts[type0FontKey];
 
 			// make a relationship with typeFont2
 			type0Font.type2Font = type2Font;
-			//type0Font.descendantFonts = '[' + type2Font.objectNumber + ' 0 R]'; 
 			
-			addToFontDictionary(type0FontKey, 'msgothic', 'normal' || '');
+			
+			addToFontDictionary(type0FontKey, 'osaka', 'normal' || '');
 
 			// Type1 fonts
 			var HELVETICA     = "helvetica",
@@ -831,6 +910,9 @@ var jsPDF = (function(global) {
 			case 'terminal':
 				fontName = 'courier';
 				break;
+			case 'osaka':
+				fontName = 'osaka';
+				break
 			case 'serif':
 			case 'cursive':
 			case 'fantasy':
@@ -1230,8 +1312,8 @@ var jsPDF = (function(global) {
 				mode = 'Tm';
 			}
 
-			
-
+			// ActiveFont
+			var activeFont = fonts[activeFontKey];			
 
 			flags = flags || {};
 			if (!('noBOM' in flags))
@@ -1268,9 +1350,11 @@ var jsPDF = (function(global) {
 				// thus, pdfEscape each component separately
 				while (len--) {
 					// for type1 font 
-					//da.push(ESC(sa.shift()));
-					// for type0 Japanese font
-					da.push((sa.shift()));
+					if (activeFont.fontType == 'Type1')
+						da.push(ESC(sa.shift()));
+					else (activeFont.fontType == 'Type0')
+						// for type0 Japanese font
+						da.push((sa.shift()));
 				}
 				var linesLeft = Math.ceil((pageHeight - y - this._runningPageHeight) * k / (activeFontSize * lineHeightProportion));
 				if (0 <= linesLeft && linesLeft < da.length + 1) {
@@ -1344,7 +1428,7 @@ var jsPDF = (function(global) {
 //				this._runningPageHeight = y -  (activeFontSize * 1.7 / k);
 //				curY = f2(pageHeight - activeFontSize * 1.7 /k);
 //			}
-			activeFontKey = 'F2';
+			
 
 			
 			function hexEncode(st) {
@@ -1353,25 +1437,36 @@ var jsPDF = (function(global) {
 				for ( var i = 0; i < st.length; i++ ) {
 					console.log(st.charCodeAt(i));
 					var hex = st.charCodeAt(i).toString(16);
+					
 					result += ('000' + hex).slice(-4);
-					console.log(result);
+					//result += ('0' + hex).slice(-2);
+					//console.log(result);
 				}
 				return result;
 			};
 
-
-			out(
-				'BT\n/' +
-				activeFontKey + ' ' + activeFontSize + ' Tf\n' +     // font face, style, size
-				(activeFontSize * lineHeightProportion) + ' TL\n' +  // line spacing
-				strokeOption +// stroke option
-				textColor +
-				// '\n' + xtra + f2(x * k) + ' ' + curY + ' ' + mode + '\n(' +
-				// text +
-				// ') Tj\nET');
-				'\n' + xtra + f2(x * k) + ' ' + curY + ' ' + mode + '\n' +
-				'<' + hexEncode(text) + '>' +
-				' Tj\nET');
+			if (activeFont.fontType == 'Type1') {
+				out(
+					'BT\n/' +
+					activeFontKey + ' ' + activeFontSize + ' Tf\n' +     // font face, style, size
+					(activeFontSize * lineHeightProportion) + ' TL\n' +  // line spacing
+					strokeOption +// stroke option
+					textColor +
+					 '\n' + xtra + f2(x * k) + ' ' + curY + ' ' + mode + '\n(' +
+					 text +
+					 ') Tj\nET');
+					
+			} else if (activeFont.fontType == 'Type0') {
+				out(
+					'BT\n/' +
+					activeFontKey + ' ' + activeFontSize + ' Tf\n' +     // font face, style, size
+					(activeFontSize * lineHeightProportion) + ' TL\n' +  // line spacing
+					strokeOption +// stroke option
+					textColor +
+					'\n' + xtra + f2(x * k) + ' ' + curY + ' ' + mode + '\n<' +
+					hexEncode(text) +
+					'> Tj\nET');
+			}
 
 
 			if (todo) {
@@ -2073,7 +2168,7 @@ var jsPDF = (function(global) {
 		//////////////////////////////////////////////////////
 		// Add the first page automatically
 		addFonts();
-		activeFontKey = 'F2';
+		activeFontKey = 'F3';
 		_addPage(format, orientation);
 
 		events.publish('initialized');
