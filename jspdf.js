@@ -322,34 +322,33 @@ var jsPDF = (function(global) {
 		},
 		putFont = function(font) {
 			font.objectNumber = newObject();
-			out('<</BaseFont/' + font.PostScriptName + '/Type/Font');
-			out('/Subtype/' + font.fontType);
-			if (typeof font.encoding === 'string') {
-				// 'WinAnsiEncoding' will bring errors when Acrobat Reader open's the file.
-				if (font.encoding == 'WinAnsiEncoding') font.encoding = 'StandardEncoding';
-				out('/Encoding/' + font.encoding);
+			if (font.fontType != 'FontDescriptor') {
+				out('<</BaseFont/' + font.PostScriptName + '/Type/Font');
+				out('/Subtype/' + font.fontType);
+				if (typeof font.encoding === 'string') {
+					// 'WinAnsiEncoding' will bring errors when Acrobat Reader open's the file.
+					//if (font.encoding == 'WinAnsiEncoding') font.encoding = 'StandardEncoding';
+					out('/Encoding/' + font.encoding);
+				}
+			} else {
+				out('<<\n /Type /FontDescriptor');
 			}
 			
 			switch (font.fontType) {
 			case 'Type0':
 				// DescendantFonts
-				console.log(font.type2Font.objectNumber);
 				out('/DescendantFonts [ ' + font.type2Font.objectNumber + ' 0 R ]');
 				break;
 			case 'CIDFontType2':
 				// FontDescriptor
-				
-				out('/FontDescriptor [ ' + font.fontDescriptor.objectNumber + ' 0 R ]');
+				out('/FontDescriptor ' + font.fontDescriptor.objectNumber + ' 0 R');
 				for (var key in font.attrs){
-					console.log('key = '+key+', value = '+font.attrs[key]);
 					out('/'+key+' '+font.attrs[key]);
 				};
 				break;
 			case 'FontDescriptor':
-				console.log(font.attrs);
 				for (var key in font.attrs){
-					console.log('key = '+key+', value = '+font.attrs[key]);
-					out('/'+key+' '+font.attrs[key]);
+					out(' /'+key+' '+font.attrs[key]);
 				};
 
 				// FontName, Flags, FontBBox, MissingWidth, StemV, StemH, 
@@ -452,89 +451,7 @@ var jsPDF = (function(global) {
 			return fontKey;
 		},
 		addFonts = function() {
-			// FontDescriptor
-			var attrs1 = {
-				'FontName':'Osaka',
-				'Flags':4,
-				'FontBBox': '[-55 -227 1023 1000]',
-				'MissingWidth': 507,
-				'StemV': 98,
-				'StemH': 78,
-				'ItalicAngle': 0,
-				'CapHeight': 781,
-				'XHeight': 559,
-				'Ascent': 853,
-				'Descent': -250,
-				'Leading': 0,
-				'MaxWidth': 1031,
-				'AvgWidth': 507,
-				'Style': '<< /Panose <0805020B0609000000000000> >>'};
-				
-			var fontDescriptorKey = addFont('Osaka', 'osaka', NORMAL, false, 'FontDescriptor', attrs1);
-			addToFontDictionary(fontDescriptorKey, 'osaka', 'normal'||'');
-			var fontDescriptor = fonts[fontDescriptorKey];
-
-			// CIDFontType2
-			var attrs2 = {
-				'CIDSystemInfo':'<<\n'
-					+' /Registry (Adobe)\n'
-					+' /Ordering (Japan1)\n'
-					+' /Supplement 6\n'
-					+'>>',
-				'DW':1000,
-/*
-/W [
- 1 1 300
- % abcdefg
- 66 [600 600 500 600 600 350 600]
- % hijklmn
- 73 [600 300 350 550 250 900 550]
- % opqrstu
- 80 [600 600 600 400 500 450 550]
- % vwxyz
- 87 [600 800 500 550 550]
- % ABCDEFG
- 34 [700 600 650 700 600 550 650]
- % HIJKLMN
- 41 [700 300 550 700 650 800 700]
- % OPQRSTU
- 48 [700 650 700 700 700 700 700]
- % VWXYZ
- 55 [700 900 650 650 650]
- 0 231 640
-]
-*/
-				'W': '[\n'
-					+' 1 1 300\n'
-					+' 14 14 200\n'
-					+' 66 [600 600 500 600 600 350 600]\n'
-					+' 73 [600 300 350 550 250 900 550]\n'
-					+' 80 [600 600 600 400 500 450 550]\n'
-					+' 87 [600 800 500 550 550]\n'
-					+' 34 [700 600 650 700 600 550 650]\n'
-					+' 41 [700 300 550 700 650 800 700]\n'
-					+' 48 [700 650 700 700 700 700 700]\n'
-					+' 55 [700 900 650 650 650]\n'
-					+' 0 231 640\n'
-					+']'							
-				};
-			
-
-			var type2FontKey = addFont('Osaka', 'osaka', NORMAL, false, 'CIDFontType2', attrs2);
-			addToFontDictionary(type2FontKey, 'osaka', 'normal' || ''); 
-			var type2Font = fonts[type2FontKey];
-			type2Font.fontDescriptor = fontDescriptor;
-
-			// Type0 Japanese fonts
-			var type0FontKey = addFont('Osaka', 'osaka', NORMAL, 'UniJIS-UTF16-H', 'Type0');
-			// add the type0 specific properties
-			var type0Font = fonts[type0FontKey];
-
-			// make a relationship with typeFont2
-			type0Font.type2Font = type2Font;
-			
-			
-			addToFontDictionary(type0FontKey, 'osaka', 'normal' || '');
+			addJaFonts();
 
 			// Type1 fonts
 			var HELVETICA     = "helvetica",
@@ -572,10 +489,79 @@ var jsPDF = (function(global) {
 				var parts = standardFonts[i][0].split('-');
 				addToFontDictionary(fontKey, parts[0], parts[1] || '');
 			}
-
 			
 
 			events.publish('addFonts', { fonts : fonts, dictionary : fontmap });
+		},
+		addJaFonts = function() {
+			var jaFontNames = ['MS-PGothic', 'MS-Mincho', 'Osaka'];
+
+			for (var index in jaFontNames){
+				var fontName = jaFontNames[index];
+				console.log("fontName = " + fontName + ", "+fontName.toLowerCase());
+				// FontDescriptor
+				var attrs1 = {
+					'FontName': '/'+fontName,
+					'Flags':4,
+					'FontBBox': '[-55 -227 1023 1000]',
+					'MissingWidth': 507,
+					'StemV': 98,
+					'StemH': 78,
+					'ItalicAngle': 0,
+					'CapHeight': 781,
+					'XHeight': 559,
+					'Ascent': 853,
+					'Descent': -250,
+					'Leading': 0,
+					'MaxWidth': 1031,
+					'AvgWidth': 507,
+					'Style': '<< /Panose <0805020B0609000000000000> >>'};
+					
+				var fontDescriptorKey = addFont(fontName, fontName.toLowerCase(), 'normal', false, 'FontDescriptor', attrs1);
+				addToFontDictionary(fontDescriptorKey, fontName.toLowerCase(), 'normal'||'');
+				var fontDescriptor = fonts[fontDescriptorKey];
+
+				// CIDFontType2
+				var attrs2 = {
+					'CIDSystemInfo':'<<\n'
+						+' /Registry (Adobe)\n'
+						+' /Ordering (Japan1)\n'
+						+' /Supplement 2\n'
+						+'>>',
+					'DW':1000,
+					'W': '[\n'
+						+' 1 1 300\n' // space
+						+' 13 13 280\n' // . - , dash
+						+' 14 14 330\n' // . - , dash
+						+' 15 15 280\n' // . - , dash
+						+' 17 26 550\n'
+						+' 66 [600 600 500 600 600 350 600]\n'	// a b c d e f g
+						+' 73 [600 300 350 550 250 900 550]\n'	// h i j k l m n
+						+' 80 [600 600 600 400 500 450 550]\n'	// o p q r s t u
+						+' 87 [600 800 500 550 550]\n'			// v w x y z
+						+' 34 [700 600 650 700 600 550 650]\n'
+						+' 41 [700 300 550 700 650 800 700]\n'
+						+' 48 [700 650 700 700 700 700 700]\n'
+						+' 55 [700 900 650 650 650]\n'
+						+' 91 230 640\n'
+						+']'
+					};			
+				var type2FontKey = addFont(fontName, fontName.toLowerCase(), 'normal', false, 'CIDFontType2', attrs2);
+				addToFontDictionary(type2FontKey, fontName.toLowerCase(), 'normal' || ''); 
+				var type2Font = fonts[type2FontKey];
+				type2Font.fontDescriptor = fontDescriptor;
+
+				// Type0 Japanese fonts
+				var type0FontKey = addFont(fontName, fontName.toLowerCase(), 'normal', 'UniJIS-UTF16-H', 'Type0');
+				// add the type0 specific properties
+				var type0Font = fonts[type0FontKey];
+
+				// make a relationship with typeFont2
+				type0Font.type2Font = type2Font;
+				
+				addToFontDictionary(type0FontKey, fontName.toLowerCase(), 'normal' || '');
+			}
+			
 		},
 		SAFE = function __safeCall(fn) {
 			fn.foo = function __safeCallWrapper() {
@@ -910,9 +896,15 @@ var jsPDF = (function(global) {
 			case 'terminal':
 				fontName = 'courier';
 				break;
+			case 'ms-mincho':
+				fontName = 'ms-mincho';
+				break;
+			case 'ms-pgothic':
+				fontName = 'ms-pgothic';
+				break;
 			case 'osaka':
 				fontName = 'osaka';
-				break
+				break;
 			case 'serif':
 			case 'cursive':
 			case 'fantasy':
