@@ -16,8 +16,8 @@ jsPDFのAPIの用法についてのドキュメントは、特に日本語につ
 
 | APIメソッド | 説明 |
 --------|------
-| addPage | ページの追加 |
-| setPage | 作業対象のページの移動 |
+| [addPage](#addPage) | ページの追加 |
+| [setPage](#setpage) | 作業対象のページの移動 |
 | insertPage | ページの挿入 |
 | movePage | ページの移動 |
 | deletePage | ページの削除 |
