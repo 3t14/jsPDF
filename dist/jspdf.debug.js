@@ -1,7 +1,7 @@
 /** @preserve
  * jsPDF - PDF Document creation from JavaScript
- * Version 1.1.299-git Built on 2015-10-26T18:19
- *                           CommitID e111824159
+ * Version 1.1.300-git Built on 2015-10-27T17:52
+ *                           CommitID 6271b26570
  *
  * Copyright (c) 2010-2014 James Hall <james@parall.ax>, https://github.com/MrRio/jsPDF
  *               2010 Aaron Spike, https://github.com/acspike
@@ -1427,12 +1427,8 @@ var jsPDF = (function(global) {
 				var result = '';
 				
 				for ( var i = 0; i < st.length; i++ ) {
-					console.log(st.charCodeAt(i));
 					var hex = st.charCodeAt(i).toString(16);
-					
 					result += ('000' + hex).slice(-4);
-					//result += ('0' + hex).slice(-2);
-					//console.log(result);
 				}
 				return result;
 			};
@@ -1445,7 +1441,7 @@ var jsPDF = (function(global) {
 					strokeOption +// stroke option
 					textColor +
 					 '\n' + xtra + f2(x * k) + ' ' + curY + ' ' + mode + '\n(' +
-					 text +
+					 text + 
 					 ') Tj\nET');
 					
 			} else if (activeFont.fontType == 'Type0') {
@@ -2119,6 +2115,22 @@ var jsPDF = (function(global) {
 			API.output('save', filename);
 		};
 
+		/**
+	    *	Insert something to all pages
+	    */
+	    API.repeatAllPages = function (processPerPage) {
+	    	console.log("repeatAllPages");
+
+	    	if (pages !== undefined)
+		    	for (var i=1; i < pages.length; i++) {
+		    		// call a page process function
+		    		this.setPage(i);
+		    		processPerPage(i, pages.length-1);		    		
+		    	}
+		    return this;
+	     }
+
+
 		// applying plugins (more methods) ON TOP of built-in API.
 		// this is intentional as we allow plugins to override
 		// built-ins
@@ -2167,6 +2179,8 @@ var jsPDF = (function(global) {
 		return API;
 	}
 
+
+
 	/**
 	 * jsPDF.API is a STATIC property of jsPDF class.
 	 * jsPDF.API is an object you can add methods and properties to.
@@ -2194,7 +2208,7 @@ var jsPDF = (function(global) {
 	 * pdfdoc.mymethod() // <- !!!!!!
 	 */
 	jsPDF.API = {events:[]};
-	jsPDF.version = "1.1.299-debug 2015-10-26T18:19:root";
+	jsPDF.version = "1.1.300-debug 2015-10-27T17:52:rd";
 
 	if (typeof define === 'function' && define.amd) {
 		define('jsPDF', function() {
