@@ -14,7 +14,7 @@ jsPDF日本語対応化のメモ
 
 jsPDFのAPIの用法についてのドキュメントは、特に日本語については不足していますので、APIのドキュメントを下に追記していきたいと思います。
 
-## jsPDF APIリスト
+## jsPDF_ja APIリスト
 | APIメソッド | 説明 |
 --------|------
 | [addPage](#addpage) | ページの追加 |
@@ -51,6 +51,13 @@ jsPDFのAPIの用法についてのドキュメントは、特に日本語につ
 | ------ | ----- |
 | CapJoinStyles | |
 
+
+## jsPDF_ja 追加機能APIリスト
+
+| APIメソッド | 説明 |
+--------|------
+| [repeatAllPages](#repeatallpages) | 個々のページに対する繰り返し処理 |
+
 ## jsPDF プラグイン APIリスト
 
 
@@ -63,7 +70,9 @@ jsPDFのAPIの用法についてのドキュメントは、特に日本語につ
 前提条件として既にページが作成されていなければならない。
 
 #### 書式
+```
 setPage(_page_number_)
+```
 
 ##### 引数
 * _page_number_: 1から始まるページ番号。
@@ -74,5 +83,52 @@ setPage(_page_number_)
   doc.setPage(2);
   doc.text("This is page 2",100,30);
 
+```
+
+### repeatAllPages
+#### 説明
+個々のページに対する繰り返し処理を実行するAPIです。
+それぞれのページ内の処理は引数として渡される関数に基づきます。
+
+#### 書式
+書式1: 
+``` JavaScript
+
+  repeatAllPages(repeat_func)
+
+```
+
+書式2: 
+``` JavaScript
+
+  repeatAllPages(repeat_func(current_page, number_of_pages)){
+    .... 個々のページで行う処理 ....
+  })
+
+```
+
+##### 引数
+* _repeat_func_: 引数を二つ持つ処理関数。
+
+###### コールバック内引数
+* 第1引数: _current_page_: 現在のページ番号(1〜)
+* 第2引数: _number_of_pages_: 全ページ数
+
+#### サンプルコード
+``` JavaScript
+
+ doc.repeatAllPages(function (i, n) {
+				// 各ページ描画する前に呼び出される処理
+				
+				var rows0 = [
+					{"title": "seikyuu","memo": "H27.1.31"},
+					{"title": "seikyuu","memo": i + " / " + n},
+					{"title": "seikyuu","memo": "ndh-5815"},
+				];
+
+        // columns0とoptions0は別定義
+				doc.autoTable(columns0, rows0, options0);
+  });
+  
 ```
 
