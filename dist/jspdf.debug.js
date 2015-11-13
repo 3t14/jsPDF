@@ -1,7 +1,7 @@
 /** @preserve
  * jsPDF - PDF Document creation from JavaScript
- * Version 1.1.300-git Built on 2015-10-27T17:52
- *                           CommitID 6271b26570
+ * Version 1.1.317-git Built on 2015-11-13T20:01
+ *                           CommitID 3b279af910
  *
  * Copyright (c) 2010-2014 James Hall <james@parall.ax>, https://github.com/MrRio/jsPDF
  *               2010 Aaron Spike, https://github.com/acspike
@@ -526,8 +526,9 @@ var jsPDF = (function(global) {
 					'CIDSystemInfo':'<<\n'
 						+' /Registry (Adobe)\n'
 						+' /Ordering (Japan1)\n'
-						+' /Supplement 2\n'
+						+' /Supplement 5\n'
 						+'>>',
+					'CIDToGIDMap': '/Identity',
 					'DW':1000,
 					'W': '[\n'
 						+' 1 1 300\n' // space
@@ -544,7 +545,7 @@ var jsPDF = (function(global) {
 						+' 48 [700 650 700 700 700 700 700]\n'
 						+' 55 [700 900 650 650 650]\n'
 						+' 91 230 640\n'
-						+']'
+						+']',					
 					};			
 				var type2FontKey = addFont(fontName, fontName.toLowerCase(), 'normal', false, 'CIDFontType2', attrs2);
 				addToFontDictionary(type2FontKey, fontName.toLowerCase(), 'normal' || ''); 
@@ -1042,7 +1043,9 @@ var jsPDF = (function(global) {
 							return API.output('dataurlnewwindow');
 						}
 					}
+
 					saveAs(getBlob(), options);
+					
 					if(typeof saveAs.unload === 'function') {
 						if(global.setTimeout) {
 							setTimeout(saveAs.unload,911);
@@ -2130,6 +2133,12 @@ var jsPDF = (function(global) {
 		    return this;
 	     }
 
+	     /**
+	     *	Export binary data to an external program.
+	     */
+	     API.getArrayBuffer = function () {
+	     	return API.output('arraybuffer');
+	     };
 
 		// applying plugins (more methods) ON TOP of built-in API.
 		// this is intentional as we allow plugins to override
@@ -2208,7 +2217,7 @@ var jsPDF = (function(global) {
 	 * pdfdoc.mymethod() // <- !!!!!!
 	 */
 	jsPDF.API = {events:[]};
-	jsPDF.version = "1.1.300-debug 2015-10-27T17:52:rd";
+	jsPDF.version = "1.1.317-debug 2015-11-13T20:01:root";
 
 	if (typeof define === 'function' && define.amd) {
 		define('jsPDF', function() {
@@ -7717,7 +7726,7 @@ var saveAs = saveAs || (function(view) {
 	"use strict";
 	// IE <10 is explicitly unsupported
 	if (typeof navigator !== "undefined" && /MSIE [1-9]\./.test(navigator.userAgent)) {
-		return;
+		if (document.documentMode <10) return;
 	}
 	var
 		  doc = view.document

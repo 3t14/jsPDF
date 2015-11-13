@@ -526,8 +526,9 @@ var jsPDF = (function(global) {
 					'CIDSystemInfo':'<<\n'
 						+' /Registry (Adobe)\n'
 						+' /Ordering (Japan1)\n'
-						+' /Supplement 2\n'
+						+' /Supplement 5\n'
 						+'>>',
+					'CIDToGIDMap': '/Identity',
 					'DW':1000,
 					'W': '[\n'
 						+' 1 1 300\n' // space
@@ -544,7 +545,7 @@ var jsPDF = (function(global) {
 						+' 48 [700 650 700 700 700 700 700]\n'
 						+' 55 [700 900 650 650 650]\n'
 						+' 91 230 640\n'
-						+']'
+						+']',					
 					};			
 				var type2FontKey = addFont(fontName, fontName.toLowerCase(), 'normal', false, 'CIDFontType2', attrs2);
 				addToFontDictionary(type2FontKey, fontName.toLowerCase(), 'normal' || ''); 
@@ -1042,7 +1043,9 @@ var jsPDF = (function(global) {
 							return API.output('dataurlnewwindow');
 						}
 					}
+
 					saveAs(getBlob(), options);
+					
 					if(typeof saveAs.unload === 'function') {
 						if(global.setTimeout) {
 							setTimeout(saveAs.unload,911);
@@ -2130,6 +2133,12 @@ var jsPDF = (function(global) {
 		    return this;
 	     }
 
+	     /**
+	     *	Export binary data to an external program.
+	     */
+	     API.getArrayBuffer = function () {
+	     	return API.output('arraybuffer');
+	     };
 
 		// applying plugins (more methods) ON TOP of built-in API.
 		// this is intentional as we allow plugins to override
