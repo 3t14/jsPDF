@@ -1005,11 +1005,17 @@ var jsPDF = (function(global) {
 			case 'terminal':
 				fontName = 'courier';
 				break;
+			case 'ms-pmincho':
+				fontName = 'ms-pmincho';
+				break;
 			case 'ms-mincho':
 				fontName = 'ms-mincho';
 				break;
-			case 'ms-pgothic':
+			case 'ms-gothic':
 				fontName = 'ms-pgothic';
+				break;
+			case 'ms-pgothic':
+				fontName = 'ms-gothic';
 				break;
 			case 'osaka':
 				fontName = 'osaka';
