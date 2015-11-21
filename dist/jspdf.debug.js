@@ -1,7 +1,7 @@
 /** @preserve
  * jsPDF - PDF Document creation from JavaScript
- * Version 1.1.324-git Built on 2015-11-20T18:51
- *                           CommitID e5318de018
+ * Version 1.1.324-git Built on 2015-11-21T08:58
+ *                           CommitID c7c14a45c1
  *
  * Copyright (c) 2010-2014 James Hall <james@parall.ax>, https://github.com/MrRio/jsPDF
  *               2010 Aaron Spike, https://github.com/acspike
@@ -495,6 +495,80 @@ var jsPDF = (function(global) {
 		},
 		addJaFonts = function() {
 			var jaFontNames = ['MS-PGothic', 'MS-Mincho', 'Osaka'];
+			var jaFontWidths = {
+				'MS-PGothic':'[\n'
+						+' 1 1 300\n' // space
+						+' 2 2 350\n' // !
+						+' 13 13 280\n' // . - , dash
+						+' 14 14 330\n' // . - , dash
+						+' 15 15 280\n' // . - , dash
+						+' 16 16 480\n' // / slash
+						+' 17 17 520\n' // 0
+						+' 18 26 620\n' // 1 - 
+						+' 27 28 330\n' // : ;						
+						+' 32 32 280\n' // ?
+
+						+' 66 [600 600 500 600 600 350 600]\n'	// a b c d e f g
+						+' 73 [600 300 350 550 250 900 550]\n'	// h i j k l m n
+						+' 80 [600 600 600 400 500 450 550]\n'	// o p q r s t u
+						+' 87 [600 800 500 550 550]\n'			// v w x y z
+						+' 34 [700 600 650 700 600 550 650]\n'
+						+' 41 [700 300 550 700 650 800 700]\n'
+						+' 48 [700 650 700 700 700 700 700]\n'
+						+' 55 [700 900 650 650 650]\n'
+
+						+' 91 230 640\n'
+
+						+']',
+				'MS-Mincho':'[\n'
+						+' 1 1 300\n' // space
+						+' 2 2 350\n' // !
+						+' 13 13 280\n' // . - , dash
+						+' 14 14 330\n' // . - , dash
+						+' 15 15 280\n' // . - , dash
+						+' 16 16 480\n' // / slash
+						+' 17 17 520\n' // 0
+						+' 18 26 620\n' // 1 - 
+						+' 27 28 330\n' // : ;						
+						+' 32 32 280\n' // ?
+
+						+' 66 [600 600 500 600 600 350 600]\n'	// a b c d e f g
+						+' 73 [600 300 350 550 250 900 550]\n'	// h i j k l m n
+						+' 80 [600 600 600 400 500 450 550]\n'	// o p q r s t u
+						+' 87 [600 800 500 550 550]\n'			// v w x y z
+						+' 34 [700 600 650 700 600 550 650]\n'
+						+' 41 [700 300 550 700 650 800 700]\n'
+						+' 48 [700 650 700 700 700 700 700]\n'
+						+' 55 [700 900 650 650 650]\n'
+
+						+' 91 230 640\n'
+
+						+']',
+				'Osaka':'[\n'
+						+' 1 1 300\n' // space
+						+' 2 2 350\n' // !
+						+' 13 13 280\n' // . - , dash
+						+' 14 14 330\n' // . - , dash
+						+' 15 15 280\n' // . - , dash
+						+' 16 16 480\n' // / slash
+						+' 17 17 520\n' // 0
+						+' 18 26 620\n' // 1 - 
+						+' 27 28 330\n' // : ;						
+						+' 32 32 280\n' // ?
+
+						+' 66 [600 600 500 600 600 350 600]\n'	// a b c d e f g
+						+' 73 [600 300 350 550 250 900 550]\n'	// h i j k l m n
+						+' 80 [600 600 600 400 500 450 550]\n'	// o p q r s t u
+						+' 87 [600 800 500 550 550]\n'			// v w x y z
+						+' 34 [700 600 650 700 600 550 650]\n'
+						+' 41 [700 300 550 700 650 800 700]\n'
+						+' 48 [700 650 700 700 700 700 700]\n'
+						+' 55 [700 900 650 650 650]\n'
+
+						+' 91 230 640\n'
+
+						+']' 
+			}
 
 			for (var index in jaFontNames){
 				var fontName = jaFontNames[index];
@@ -530,38 +604,9 @@ var jsPDF = (function(global) {
 						+'>>',
 					'CIDToGIDMap': '/Identity',
 					'DW':1000,
-					'W': '[\n'
-						+' 1 1 300\n' // space
-						+' 2 2 350\n' // !
-						+' 13 13 280\n' // . - , dash
-						+' 14 14 330\n' // . - , dash
-						+' 15 15 280\n' // . - , dash
-						+' 16 16 480\n' // / slash
-						+' 17 17 520\n' // 0
-						+' 18 26 620\n' // 1 - 
-						+' 27 28 330\n' // : ;						
-						+' 32 32 280\n' // ?
-
-						+' 66 [600 600 500 600 600 350 600]\n'	// a b c d e f g
-						+' 73 [600 300 350 550 250 900 550]\n'	// h i j k l m n
-						+' 80 [600 600 600 400 500 450 550]\n'	// o p q r s t u
-						+' 87 [600 800 500 550 550]\n'			// v w x y z
-						+' 34 [700 600 650 700 600 550 650]\n'
-						+' 41 [700 300 550 700 650 800 700]\n'
-						+' 48 [700 650 700 700 700 700 700]\n'
-						+' 55 [700 900 650 650 650]\n'
-
-						+' 91 230 640\n'
-
-						// +' 257 258 350\n' // : ;
-
-						// // 半角英字
-						// // +' 296 321 400\n'	// a b c d e f g
-						// +' 296 [400 500 450 500 420 500 420]\n'	// a b c d e f g
-
-
-						+']',					
-					};			
+					'W': jaFontWidths[fontName],					
+					};
+								
 				var type2FontKey = addFont(fontName, fontName.toLowerCase(), 'normal', false, 'CIDFontType2', attrs2);
 				addToFontDictionary(type2FontKey, fontName.toLowerCase(), 'normal' || ''); 
 				var type2Font = fonts[type2FontKey];
@@ -2232,7 +2277,7 @@ var jsPDF = (function(global) {
 	 * pdfdoc.mymethod() // <- !!!!!!
 	 */
 	jsPDF.API = {events:[]};
-	jsPDF.version = "1.1.324-debug 2015-11-20T18:51:root";
+	jsPDF.version = "1.1.324-debug 2015-11-21T08:58:root";
 
 	if (typeof define === 'function' && define.amd) {
 		define('jsPDF', function() {
