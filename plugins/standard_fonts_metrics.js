@@ -325,6 +325,8 @@ or obligation to support the use of the AFM files.
  Added by @3t14 for corresponding to Japanese default fonts.
 */ 
 fontMetrics['Unicode']['MS-PGothic'] = {widths:{0:100, fof:100}, kerning:{fof:0}};
+fontMetrics['Unicode']['MS-Gothic'] = {widths:{0:100, fof:100}, kerning:{fof:0}};
+fontMetrics['Unicode']['MS-PMincho'] =  {widths:{0:100, fof:100}, kerning:{fof:0}};
 fontMetrics['Unicode']['MS-Mincho'] =  {widths:{0:100, fof:100}, kerning:{fof:0}};
 fontMetrics['Unicode']['Osaka'] =  {widths:{0:100, fof:100}, kerning:{fof:0}};
 
@@ -358,11 +360,15 @@ function addNumbersFontMetrics(fontName) {
 
 
 addAsciiFontMetrics('MS-PGothic');
+addAsciiFontMetrics('MS-Gothic');
 addAsciiFontMetrics('Osaka');
+addAsciiFontMetrics('MS-PMincho');
 addAsciiFontMetrics('MS-Mincho');
 
 cloneFontMetrics('Helvetica', 'MS-PGothic');
+cloneFontMetrics('Helvetica', 'MS-Gothic');
 cloneFontMetrics('Helvetica', 'Osaka');
+cloneFontMetrics('Times-Roman', 'MS-PMincho');
 cloneFontMetrics('Times-Roman', 'MS-Mincho');
 
 // addNumbersFontMetrics('MS-PGothic');

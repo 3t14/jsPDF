@@ -494,9 +494,57 @@ var jsPDF = (function(global) {
 			events.publish('addFonts', { fonts : fonts, dictionary : fontmap });
 		},
 		addJaFonts = function() {
-			var jaFontNames = ['MS-PGothic', 'MS-Mincho', 'Osaka'];
+			var jaFontNames = ['MS-PGothic', 'MS-Gothic', 'MS-Mincho', 'MS-PMincho','Osaka'];
 			var jaFontWidths = {
 				'MS-PGothic':'[\n'
+						+' 1 1 300\n' // space
+						+' 2 2 350\n' // !
+						+' 13 13 280\n' // . - , dash
+						+' 14 14 330\n' // . - , dash
+						+' 15 15 280\n' // . - , dash
+						+' 16 16 480\n' // / slash
+						+' 17 17 520\n' // 0
+						+' 18 26 620\n' // 1 - 
+						+' 27 28 330\n' // : ;						
+						+' 32 32 280\n' // ?
+
+						+' 66 [600 600 500 600 600 350 600]\n'	// a b c d e f g
+						+' 73 [600 300 350 550 250 900 550]\n'	// h i j k l m n
+						+' 80 [600 600 600 400 500 450 550]\n'	// o p q r s t u
+						+' 87 [600 800 500 550 550]\n'			// v w x y z
+						+' 34 [700 600 650 700 600 550 650]\n'
+						+' 41 [700 300 550 700 650 800 700]\n'
+						+' 48 [700 650 700 700 700 700 700]\n'
+						+' 55 [700 900 650 650 650]\n'
+
+						+' 91 230 640\n'
+
+						+']',
+				'MS-Gothic':'[\n'
+						+' 1 1 300\n' // space
+						+' 2 2 350\n' // !
+						+' 13 13 280\n' // . - , dash
+						+' 14 14 330\n' // . - , dash
+						+' 15 15 280\n' // . - , dash
+						+' 16 16 480\n' // / slash
+						+' 17 17 520\n' // 0
+						+' 18 26 620\n' // 1 - 
+						+' 27 28 330\n' // : ;						
+						+' 32 32 280\n' // ?
+
+						+' 66 [600 600 500 600 600 350 600]\n'	// a b c d e f g
+						+' 73 [600 300 350 550 250 900 550]\n'	// h i j k l m n
+						+' 80 [600 600 600 400 500 450 550]\n'	// o p q r s t u
+						+' 87 [600 800 500 550 550]\n'			// v w x y z
+						+' 34 [700 600 650 700 600 550 650]\n'
+						+' 41 [700 300 550 700 650 800 700]\n'
+						+' 48 [700 650 700 700 700 700 700]\n'
+						+' 55 [700 900 650 650 650]\n'
+
+						+' 91 230 640\n'
+
+						+']',
+				'MS-PMincho':'[\n'
 						+' 1 1 300\n' // space
 						+' 2 2 350\n' // !
 						+' 13 13 280\n' // . - , dash
@@ -606,7 +654,7 @@ var jsPDF = (function(global) {
 					'DW':1000,
 					'W': jaFontWidths[fontName],					
 					};
-								
+
 				var type2FontKey = addFont(fontName, fontName.toLowerCase(), 'normal', false, 'CIDFontType2', attrs2);
 				addToFontDictionary(type2FontKey, fontName.toLowerCase(), 'normal' || ''); 
 				var type2Font = fonts[type2FontKey];
