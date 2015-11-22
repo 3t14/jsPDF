@@ -1,7 +1,7 @@
 /** @preserve
  * jsPDF - PDF Document creation from JavaScript
- * Version 1.1.326-git Built on 2015-11-23T04:24
- *                           CommitID e26dddd38a
+ * Version 1.1.326-git Built on 2015-11-23T04:39
+ *                           CommitID 7461efce3f
  *
  * Copyright (c) 2010-2014 James Hall <james@parall.ax>, https://github.com/MrRio/jsPDF
  *               2010 Aaron Spike, https://github.com/acspike
@@ -378,7 +378,8 @@ var jsPDF = (function(global) {
 			// Do this for each font, the '1' bit is the index of the font
 			for (var fontKey in fonts) {
 				if (fonts.hasOwnProperty(fontKey)) {
-					if (fonts[fontKey].type == 'Type0')
+					if (fonts[fontKey].fontType == 'Type0'
+						||fonts[fontKey].fontType == 'Type1')
 						out('/' + fontKey + ' ' + fonts[fontKey].objectNumber + ' 0 R');
 				}
 			}
@@ -2389,7 +2390,7 @@ var jsPDF = (function(global) {
 	 * pdfdoc.mymethod() // <- !!!!!!
 	 */
 	jsPDF.API = {events:[]};
-	jsPDF.version = "1.1.326-debug 2015-11-23T04:24:root";
+	jsPDF.version = "1.1.326-debug 2015-11-23T04:39:root";
 
 	if (typeof define === 'function' && define.amd) {
 		define('jsPDF', function() {

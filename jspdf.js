@@ -378,7 +378,8 @@ var jsPDF = (function(global) {
 			// Do this for each font, the '1' bit is the index of the font
 			for (var fontKey in fonts) {
 				if (fonts.hasOwnProperty(fontKey)) {
-					if (fonts[fontKey].type == 'Type0')
+					if (fonts[fontKey].fontType == 'Type0'
+						||fonts[fontKey].fontType == 'Type1')
 						out('/' + fontKey + ' ' + fonts[fontKey].objectNumber + ' 0 R');
 				}
 			}
