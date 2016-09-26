@@ -496,78 +496,90 @@ var jsPDF = (function(global) {
 			events.publish('addFonts', { fonts : fonts, dictionary : fontmap });
 		},
 		addJaFonts = function() {
-			var jaFontNames = ['MS-PGothic', 'MS-Gothic', 'MS-Mincho', 'MS-PMincho','Osaka'];
+			var jaFontNames = ['MS-PGothic', 'MS-Gothic', 'MS-PMincho', 'MS-Mincho', 'Osaka'];
 			var jaFontWidths = {
-				'MS-PGothic':'[\n'
+				'MS-Gothic':'[\n'
 						+' 1 1 300\n' // space
 						+' 2 2 350\n' // !
-						// +' 13 13 280\n' // . - , dash
-						// +' 14 14 330\n' // . - , dash
-						// +' 15 15 280\n' // . - , dash
-						// +' 16 16 480\n' // / slash
-						// +' 17 17 520\n' // 0
-						// +' 18 26 620\n' // 1 - 
-						// +' 27 28 330\n' // : ;						
-						// +' 32 32 280\n' // ?
+						+' 3 3 500\n' // "						
+						+' 4 4 550\n' // #						
+						+' 5 [600 600 600]\n' // $ % &	
+						+' 9 [600 600]\n' // ( )
+						+' 11 [600 520]\n' // * +				
 						+' 13 13 300\n' // . - , dash
-						+' 14 14 330\n' // . - , dash
+						+' 14 14 600\n' // . - , dash
 						+' 15 15 300\n' // . - , dash
-						+' 16 16 480\n' // / slash
+						+' 16 16 500\n' // / slash
 						+' 17 17 550\n' // 0
 						+' 18 26 600\n' // 1 - 9
-						+' 27 28 330\n' // : ;						
-						+' 32 32 500\n' // ?
-
-						+' 31 31 500\n' // : >												
-						// +' 32 32 500\n' // ?
-						+' 60 60 400\n' // [
+						+' 27 28 400\n' // : ;						
+						+' 29 29 600\n' // : <
+						+' 31 31 500\n' // : >
+						+' 32 32 550\n' // ?
+						+' 33 33 650\n' // @
+						+' 60 60 600\n' // [
 						+' 61 61 500\n' // ¥
 						+' 62 62 400\n' // ]
-						+' 92 92 400\n' // {
+						+' 64 64 600\n' // _
+						+' 92 92 500\n' // {
 						+' 94 94 400\n' // }
 
-						+' 66 [580 520 550 450 550 350 600]\n'	// a b c d e f g
-						+' 73 [600 300 350 550 250 800 600]\n'	// h i j k l m n
-						+' 80 [600 600 600 400 500 450 550]\n'	// o p q r s t u
-						+' 87 [600 800 500 550 550]\n'			// v w x y z
-						+' 34 [700 600 650 700 600 550 650]\n'	// A B C D E F G
-						+' 41 [700 300 550 700 650 800 700]\n'	// H I J K L M N
-						+' 48 [700 650 700 700 700 700 700]\n'	// O P Q R S T Y
-						+' 55 [650 700 650 650 650]\n'			// V W X Y Z
+						+' 66 [550 520 520 520 500 450 550]\n'	// a b c d e f g
+						+' 73 [500 350 450 420 450 600 550]\n'	// h i j k l m n
+						+' 80 [600 550 550 450 500 500 550]\n'	// o p q r s t u
+						+' 87 [550 600 500 500 550]\n'			// v w x y z
+						+' 34 [620 600 620 620 600 550 600]\n'	// A B C D E F G
+						+' 41 [500 500 600 600 650 650 620]\n'	// H I J K L M N
+						+' 48 [620 600 650 600 600 620 620]\n'	// O P Q R S T Y
+						+' 55 [650 650 600 600 620]\n'			// V W X Y Z
 
 						+' 91 230 640\n'
 
-						+' 674 691 700\n' // 「」【】｛｝など全角
+						+' 674 691 800\n' // 「」【】｛｝など全角
 						+' 710 710 1100\n' // ℃
 						+' 711 711 900\n' // ￥
 						+' 716 716 1000\n' // #
 
 						+']',
-				'MS-Gothic':'[\n'
+				'MS-PGothic':'[\n'
 						+' 1 1 300\n' // space
 						+' 2 2 350\n' // !
+						+' 3 3 500\n' // "						
+						+' 4 4 550\n' // #						
+						+' 5 [600 600 600]\n' // $ % &	
+						+' 9 [600 600]\n' // ( )
+						+' 11 [600 550]\n' // * +				
 						+' 13 13 300\n' // . - , dash
-						+' 14 14 330\n' // . - , dash
+						+' 14 14 600\n' // . - , dash
 						+' 15 15 300\n' // . - , dash
 						+' 16 16 480\n' // / slash
 						+' 17 17 520\n' // 0
-						+' 18 26 620\n' // 1 - 
-						+' 27 28 330\n' // : ;						
-						+' 32 32 500\n' // ?
+						+' 18 26 550\n' // 1 - 9
+						+' 27 28 400\n' // : ;						
+						+' 29 29 600\n' // : <
+						+' 31 31 500\n' // : >
+						+' 32 32 550\n' // ?
+						+' 33 33 650\n' // @
+						+' 60 60 600\n' // [
+						+' 61 61 500\n' // ¥
+						+' 62 62 400\n' // ]
+						+' 64 64 600\n' // _
+						+' 92 92 500\n' // {
+						+' 94 94 400\n' // }
 
-						+' 66 [580 520 550 500 600 350 600]\n'	// a b c d e f g
-						+' 73 [600 300 350 550 250 900 550]\n'	// h i j k l m n
-						+' 80 [600 600 600 400 500 450 550]\n'	// o p q r s t u
-						+' 87 [600 800 500 550 550]\n'			// v w x y z
-						+' 34 [700 600 650 700 600 550 650]\n'	// A B C D E F G
-						+' 41 [700 300 550 700 650 800 700]\n'	// H I J K L M N
-						+' 48 [700 650 700 700 700 700 700]\n'	// O P Q R S T Y
-						+' 55 [700 750 650 650 650]\n'			// V W X Y Z
+						+' 66 [580 520 550 550 550 380 550]\n'	// a b c d e f g
+						+' 73 [600 300 350 550 280 750 550]\n'	// h i j k l m n
+						+' 80 [580 550 550 400 500 450 580]\n'	// o p q r s t u
+						+' 87 [550 730 550 550 530]\n'			// v w x y z
+						+' 34 [700 600 650 700 600 550 700]\n'	// A B C D E F G
+						+' 41 [700 300 550 650 650 800 680]\n'	// H I J K L M N
+						+' 48 [720 650 700 700 620 650 700]\n'	// O P Q R S T Y
+						+' 55 [700 780 650 650 650]\n'			// V W X Y Z
 
 
 						+' 91 230 640\n'
 
-						+' 674 691 700\n' // 「」【】｛｝など全角
+						+' 674 691 900\n' // 「」【】｛｝など全角
 						+' 710 710 1000\n' // ℃
 						+' 711 711 1000\n' // ￥
 						+' 716 716 1000\n' // #
@@ -576,54 +588,76 @@ var jsPDF = (function(global) {
 				'MS-PMincho':'[\n'
 						+' 1 1 300\n' // space
 						+' 2 2 350\n' // !
-						+' 13 13 280\n' // . - , dash
-						+' 14 14 330\n' // . - , dash
+						+' 3 3 500\n' // "						
+						+' 4 4 550\n' // #						
+						+' 5 [600 600 600]\n' // $ % &	
+						+' 9 [550 550]\n' // ( )				
+						+' 11 [600 550]\n' // * +				
+						+' 13 13 300\n' // . - , dash
+						+' 14 14 600\n' // . - , dash
 						+' 15 15 280\n' // . - , dash
-						+' 16 16 480\n' // / slash
-						+' 17 17 520\n' // 0
-						+' 18 26 620\n' // 1 - 
-						+' 27 28 380\n' // : ;						
-						+' 32 32 350\n' // ?
+						+' 16 16 550\n' // / slash
+						+' 17 17 550\n' // 0
+						+' 18 26 600\n' // 1 - 9
+						+' 27 28 550\n' // : ;						
+						+' 29 29 520\n' // : <
+						+' 31 31 500\n' // : >
+						+' 32 32 600\n' // ?
+						+' 33 33 550\n' // @
+						+' 60 60 550\n' // [
+						+' 61 61 500\n' // ¥
+						+' 62 62 550\n' // ]
+						+' 64 64 600\n' // _
+						+' 92 92 400\n' // {
+						+' 94 94 400\n' // }
 
-						// 元々
-						// +' 66 [600 600 500 600 600 350 600]\n'	// a b c d e f g
-						// +' 73 [600 300 350 550 250 900 550]\n'	// h i j k l m n
-						// +' 80 [600 600 600 400 500 450 550]\n'	// o p q r s t u
-						// +' 87 [600 800 500 550 550]\n'			// v w x y z
-						// +' 34 [700 600 650 700 600 550 650]\n'
-						// +' 41 [700 300 550 700 650 800 700]\n'
-						// +' 48 [700 650 700 700 700 700 700]\n'
-						// +' 55 [700 900 650 650 650]\n'
-
-						// 全角
 						+' 66 [500 500 480 500 480 450 550]\n'	// a b c d e f g
-						+' 73 [500 380 450 480 380 540 500]\n'	// h i j k l m n
-						+' 80 [480 500 500 450 480 500 500]\n'	// o p q r s t u
-						+' 87 [500 550 500 410 520]\n'			// v w x y z
+						+' 73 [550 320 400 500 350 650 500]\n'	// h i j k l m n
+						+' 80 [480 500 500 450 480 400 550]\n'	// o p q r s t u
+						+' 87 [500 650 500 500 520]\n'			// v w x y z
 						+' 34 [700 600 650 700 600 550 650]\n'	// A B C D E F G
-						+' 41 [600 300 550 700 650 800 700]\n'	// H I J K L M N
-						+' 48 [700 650 700 700 700 700 700]\n'	// O P Q R S T Y
+						+' 41 [700 400 550 700 650 800 700]\n'	// H I J K L M N
+						+' 48 [700 650 750 700 600 700 700]\n'	// O P Q R S T Y
 						+' 55 [700 900 650 650 650]\n'			// V W X Y Z
-
 
 						+' 91 230 640\n'
 
+						+' 674 691 800\n' // 「」【】｛｝など全角
+						+' 710 710 1000\n' // ℃
+						+' 711 711 1000\n' // ￥
+						+' 715 715 1000\n' // ％
+						+' 716 716 1000\n' // ＃
+
 						+']',
 				'MS-Mincho':'[\n'
+						// この辺は半角
 						+' 1 1 300\n' // space
 						+' 2 2 450\n' // !
+						+' 3 3 500\n' // "						
+						+' 4 4 380\n' // #						
+						+' 5 [550 550 500]\n' // $ % &	
+						+' 9 [550 550]\n' // ( )				
+						+' 11 [600 520]\n' // * +				
 						+' 13 13 300\n' // . - , dash
-						+' 14 14 330\n' // . - , dash
+						+' 14 14 600\n' // . - , dash
 						+' 15 15 280\n' // . - , dash
-						+' 16 16 480\n' // / slash
+						+' 16 16 550\n' // / slash
 						+' 17 17 550\n' // 0
 						+' 18 26 600\n' // 1 - 9
-						+' 27 28 450\n' // : ;						
+						+' 27 28 500\n' // : ;						
+						+' 29 29 520\n' // : <
+						+' 31 31 500\n' // : >
 						+' 32 32 600\n' // ?
+						+' 33 33 600\n' // @
+						+' 60 60 550\n' // [
+						+' 61 61 500\n' // ¥
+						+' 62 62 500\n' // ]
+						+' 64 64 600\n' // _
+						+' 92 92 400\n' // {
+						+' 94 94 400\n' // }
 
-						// 半角
 						+' 66 [500 500 450 500 500 450 550]\n'	// a b c d e f g
-						+' 73 [480 380 450 480 450 540 500]\n'	// h i j k l m n
+						+' 73 [480 380 480 480 450 540 500]\n'	// h i j k l m n
 						+' 80 [500 500 500 450 480 500 500]\n'	// o p q r s t u
 						+' 87 [500 550 500 500 520]\n'			// v w x y z
 						+' 34 [600 600 620 600 600 550 650]\n'	// A B C D E F G
@@ -637,13 +671,12 @@ var jsPDF = (function(global) {
 				'Osaka':'[\n'
 						+' 1 1 300\n' // space
 						+' 2 2 350\n' // !
-						+' 3 3 500\n' // "						
-						+' 4 4 380\n' // #						
-						+' 5 7 650\n' // $ % &					
+						+' 3 5 500\n' // " # $				
+						+' 6 7 650\n' // % &					
 						+' 9 [400 400]\n' // ( )				
-						+' 11 [550 550]\n' // * +				
-						+' 13 13 300\n' // . - , dash
-						+' 14 14 550\n' // . - , dash
+						+' 11 [600 550]\n' // * +				
+						+' 13 13 350\n' // . - , dash
+						+' 14 14 600\n' // . - , dash
 						+' 15 15 300\n' // . - , dash
 						+' 16 16 480\n' // / slash
 						+' 17 17 550\n' // 0
@@ -652,17 +685,18 @@ var jsPDF = (function(global) {
 						+' 29 29 520\n' // : <
 						+' 31 31 500\n' // : >												
 						+' 32 32 500\n' // ?
-						+' 60 60 400\n' // [
-						+' 61 61 500\n' // ¥
-						+' 62 62 400\n' // ]
+						+' 60 60 500\n' // [
+						+' 61 61 550\n' // ¥
+						+' 62 62 450\n' // ]
+						+' 64 64 600\n' // _
 						+' 92 92 400\n' // {
 						+' 94 94 400\n' // }
 
-						+' 66 [550 600 500 600 550 350 600]\n'	// a b c d e f g
+						+' 66 [550 550 500 600 550 350 600]\n'	// a b c d e f g
 						+' 73 [600 300 350 550 250 800 550]\n'	// h i j k l m n
 						+' 80 [550 600 600 400 500 450 550]\n'	// o p q r s t u
 						+' 87 [550 750 500 550 550]\n'			// v w x y z
-						+' 34 [650 600 650 700 600 550 650]\n'
+						+' 34 [650 650 650 700 600 550 700]\n'
 						+' 41 [700 300 550 700 650 800 700]\n'
 						+' 48 [700 650 700 700 700 700 700]\n'
 						+' 55 [700 900 650 650 650]\n'
@@ -1071,10 +1105,10 @@ var jsPDF = (function(global) {
 				fontName = 'ms-mincho';
 				break;
 			case 'ms-gothic':
-				fontName = 'ms-pgothic';
+				fontName = 'ms-gothic';
 				break;
 			case 'ms-pgothic':
-				fontName = 'ms-gothic';
+				fontName = 'ms-pgothic';
 				break;
 			case 'osaka':
 				fontName = 'osaka';
@@ -1432,6 +1466,16 @@ var jsPDF = (function(global) {
 				return pdfEscape(s, flags);
 			}
 
+
+			function hexEncode(st) {
+				var result = '';
+				
+				for ( var i = 0; i < st.length; i++ ) {
+					var hex = st.charCodeAt(i).toString(16);
+					result += ('000' + hex).slice(-4);
+				}
+				return result;
+			};
 			
 
 			// Pre-August-2012 the order of arguments was function(x, y, text, flags)
@@ -1508,9 +1552,14 @@ var jsPDF = (function(global) {
 				this._runningPageHeight = 0;
 			}
 			
+			var jaFlag = (activeFont.fontType == 'Type0');
+
 			if (typeof text === 'string') {
-				text = ESC(text);
+				console.log("text  === 'string'");
+				text = (jaFlag) ? hexEncode(text) : ESC(text);
+
 			} else if (text instanceof Array) {
+				console.log("text instanceof Array length = " + text.length);
 				
 				// we don't want to destroy  original text array, so cloning it
 				var sa = text.concat(), da = [], len = sa.length;
@@ -1518,11 +1567,7 @@ var jsPDF = (function(global) {
 				// thus, pdfEscape each component separately
 				while (len--) {
 					// for type1 font 
-					if (activeFont.fontType == 'Type1')
-						da.push(ESC(sa.shift()));
-					else (activeFont.fontType == 'Type0')
-						// for type0 Japanese font
-						da.push((sa.shift()));
+					da.push((jaFlag) ? hexEncode(sa.shift()) : ESC(sa.shift()));
 				}
 				var linesLeft = Math.ceil((pageHeight - y - this._runningPageHeight) * k / (activeFontSize * lineHeightProportion));
 				if (0 <= linesLeft && linesLeft < da.length + 1) {
@@ -1555,19 +1600,27 @@ var jsPDF = (function(global) {
 						throw new Error('Unrecognized alignment option, use "center" or "right".');
 					}
 					prevX = x;
-					text = da[0] + ") Tj\n";
+					text = (jaFlag) ? da[0] + "> Tj\n" : da[0] + ") Tj\n";
 					for ( i = 1, len = da.length ; i < len; i++ ) {
 						var delta = maxLineLength - lineWidths[i];
 						if( align === "center" ) delta /= 2;
 						// T* = x-offset leading Td ( text )
-						text += ( ( left - prevX ) + delta ) + " -" + leading + " Td (" + da[i];
+						if (jaFlag) 
+							text += ( ( left - prevX ) + delta ) + " -" + leading + " Td <" + da[i];
+						else
+							text += ( ( left - prevX ) + delta ) + " -" + leading + " Td (" + da[i];
 						prevX = left + delta;
 						if( i < len - 1 ) {
-							text += ") Tj\n";
+							if (jaFlag)
+								text += "> Tj\n";
+							else
+								text += ") Tj\n";
 						}
 					}
 				} else {
-					text = da.join(") Tj\nT* (");
+					text = (jaFlag) 
+						? da.join("> Tj\nT* <")
+						: da.join(") Tj\nT* (");
 				}
 			} else {
 				throw new Error('Type of text must be string or Array. "' + text + '" is not recognized.');
@@ -1599,15 +1652,6 @@ var jsPDF = (function(global) {
 			
 
 			
-			function hexEncode(st) {
-				var result = '';
-				
-				for ( var i = 0; i < st.length; i++ ) {
-					var hex = st.charCodeAt(i).toString(16);
-					result += ('000' + hex).slice(-4);
-				}
-				return result;
-			};
 
 			if (activeFont.fontType == 'Type1') {
 				out(
@@ -1628,7 +1672,7 @@ var jsPDF = (function(global) {
 					strokeOption +// stroke option
 					textColor +
 					'\n' + xtra + f2(x * k) + ' ' + curY + ' ' + mode + '\n<' +
-					hexEncode(text) +
+					text + //*/hexEncode(text) +
 					'> Tj\nET');
 			}
 
