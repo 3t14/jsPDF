@@ -1,7 +1,7 @@
 /** @preserve
  * jsPDF - PDF Document creation from JavaScript
- * Version 1.2.271-git Built on 2016-09-27T14:35
- *                           CommitID 3a6c4e55aa
+ * Version 1.3.31-git Built on 2017-01-31T13:48
+ *                           CommitID d79c601198
  *
  * Copyright (c) 2010-2014 James Hall <james@parall.ax>, https://github.com/MrRio/jsPDF
  *               2010 Aaron Spike, https://github.com/acspike
@@ -333,7 +333,7 @@ var jsPDF = (function(global) {
 			} else {
 				out('<<\n /Type /FontDescriptor');
 			}
-			
+
 			switch (font.fontType) {
 			case 'Type0':
 				// DescendantFonts
@@ -351,8 +351,8 @@ var jsPDF = (function(global) {
 					out(' /'+key+' '+font.attrs[key]);
 				};
 
-				// FontName, Flags, FontBBox, MissingWidth, StemV, StemH, 
-				// ItalicAngle, CapHeight, Xheight, Ascent, Descent, Leading, 
+				// FontName, Flags, FontBBox, MissingWidth, StemV, StemH,
+				// ItalicAngle, CapHeight, Xheight, Ascent, Descent, Leading,
 				// MaxWidth, AvgWidth, Style
 				break;
 			}
@@ -491,7 +491,7 @@ var jsPDF = (function(global) {
 				var parts = standardFonts[i][0].split('-');
 				addToFontDictionary(fontKey, parts[0], parts[1] || '');
 			}
-			
+
 
 			events.publish('addFonts', { fonts : fonts, dictionary : fontmap });
 		},
@@ -501,18 +501,18 @@ var jsPDF = (function(global) {
 				'MS-Gothic':'[\n'
 						+' 1 1 300\n' // space
 						+' 2 2 350\n' // !
-						+' 3 3 500\n' // "						
-						+' 4 4 550\n' // #						
-						+' 5 [600 600 600]\n' // $ % &	
+						+' 3 3 500\n' // "
+						+' 4 4 550\n' // #
+						+' 5 [600 600 600]\n' // $ % &
 						+' 9 [600 600]\n' // ( )
-						+' 11 [600 520]\n' // * +				
+						+' 11 [600 520]\n' // * +
 						+' 13 13 300\n' // . - , dash
 						+' 14 14 600\n' // . - , dash
 						+' 15 15 300\n' // . - , dash
 						+' 16 16 500\n' // / slash
 						+' 17 17 550\n' // 0
 						+' 18 26 600\n' // 1 - 9
-						+' 27 28 400\n' // : ;						
+						+' 27 28 400\n' // : ;
 						+' 29 29 600\n' // : <
 						+' 31 31 500\n' // : >
 						+' 32 32 550\n' // ?
@@ -544,18 +544,18 @@ var jsPDF = (function(global) {
 				'MS-PGothic':'[\n'
 						+' 1 1 300\n' // space
 						+' 2 2 350\n' // !
-						+' 3 3 500\n' // "						
-						+' 4 4 550\n' // #						
-						+' 5 [600 600 600]\n' // $ % &	
+						+' 3 3 500\n' // "
+						+' 4 4 550\n' // #
+						+' 5 [600 600 600]\n' // $ % &
 						+' 9 [600 600]\n' // ( )
-						+' 11 [600 550]\n' // * +				
+						+' 11 [600 550]\n' // * +
 						+' 13 13 300\n' // . - , dash
 						+' 14 14 600\n' // . - , dash
 						+' 15 15 300\n' // . - , dash
 						+' 16 16 480\n' // / slash
 						+' 17 17 520\n' // 0
 						+' 18 26 550\n' // 1 - 9
-						+' 27 28 400\n' // : ;						
+						+' 27 28 400\n' // : ;
 						+' 29 29 600\n' // : <
 						+' 31 31 500\n' // : >
 						+' 32 32 550\n' // ?
@@ -588,18 +588,18 @@ var jsPDF = (function(global) {
 				'MS-PMincho':'[\n'
 						+' 1 1 300\n' // space
 						+' 2 2 350\n' // !
-						+' 3 3 500\n' // "						
-						+' 4 4 550\n' // #						
-						+' 5 [600 600 600]\n' // $ % &	
-						+' 9 [550 550]\n' // ( )				
-						+' 11 [600 550]\n' // * +				
+						+' 3 3 500\n' // "
+						+' 4 4 550\n' // #
+						+' 5 [600 600 600]\n' // $ % &
+						+' 9 [550 550]\n' // ( )
+						+' 11 [600 550]\n' // * +
 						+' 13 13 300\n' // . - , dash
 						+' 14 14 600\n' // . - , dash
 						+' 15 15 280\n' // . - , dash
 						+' 16 16 550\n' // / slash
 						+' 17 17 550\n' // 0
 						+' 18 26 600\n' // 1 - 9
-						+' 27 28 550\n' // : ;						
+						+' 27 28 550\n' // : ;
 						+' 29 29 520\n' // : <
 						+' 31 31 500\n' // : >
 						+' 32 32 600\n' // ?
@@ -633,18 +633,18 @@ var jsPDF = (function(global) {
 						// この辺は半角
 						+' 1 1 300\n' // space
 						+' 2 2 450\n' // !
-						+' 3 3 500\n' // "						
-						+' 4 4 380\n' // #						
-						+' 5 [550 550 500]\n' // $ % &	
-						+' 9 [550 550]\n' // ( )				
-						+' 11 [600 520]\n' // * +				
+						+' 3 3 500\n' // "
+						+' 4 4 380\n' // #
+						+' 5 [550 550 500]\n' // $ % &
+						+' 9 [550 550]\n' // ( )
+						+' 11 [600 520]\n' // * +
 						+' 13 13 300\n' // . - , dash
 						+' 14 14 600\n' // . - , dash
 						+' 15 15 280\n' // . - , dash
 						+' 16 16 550\n' // / slash
 						+' 17 17 550\n' // 0
 						+' 18 26 600\n' // 1 - 9
-						+' 27 28 500\n' // : ;						
+						+' 27 28 500\n' // : ;
 						+' 29 29 520\n' // : <
 						+' 31 31 500\n' // : >
 						+' 32 32 600\n' // ?
@@ -671,10 +671,10 @@ var jsPDF = (function(global) {
 				'Osaka':'[\n'
 						+' 1 1 300\n' // space
 						+' 2 2 350\n' // !
-						+' 3 5 500\n' // " # $				
-						+' 6 7 650\n' // % &					
-						+' 9 [400 400]\n' // ( )				
-						+' 11 [600 550]\n' // * +				
+						+' 3 5 500\n' // " # $
+						+' 6 7 650\n' // % &
+						+' 9 [400 400]\n' // ( )
+						+' 11 [600 550]\n' // * +
 						+' 13 13 350\n' // . - , dash
 						+' 14 14 600\n' // . - , dash
 						+' 15 15 300\n' // . - , dash
@@ -683,7 +683,7 @@ var jsPDF = (function(global) {
 						+' 18 26 600\n' // 1 - 9
 						+' 27 28 330\n' // : ;
 						+' 29 29 520\n' // : <
-						+' 31 31 500\n' // : >												
+						+' 31 31 500\n' // : >
 						+' 32 32 500\n' // ?
 						+' 60 60 500\n' // [
 						+' 61 61 550\n' // ¥
@@ -708,7 +708,7 @@ var jsPDF = (function(global) {
 						+' 711 711 1000\n' // ￥
 						+' 716 716 1000\n' // #
 
-						+']' 
+						+']'
 			}
 
 			for (var index in jaFontNames){
@@ -731,7 +731,7 @@ var jsPDF = (function(global) {
 					'MaxWidth': 1031,
 					'AvgWidth': 507,
 					'Style': '<< /Panose <0805020B0609000000000000> >>'};
-					
+
 				var fontDescriptorKey = addFont(fontName, fontName.toLowerCase(), 'normal', false, 'FontDescriptor', attrs1);
 				addToFontDictionary(fontDescriptorKey, fontName.toLowerCase(), 'normal'||'');
 				var fontDescriptor = fonts[fontDescriptorKey];
@@ -745,11 +745,11 @@ var jsPDF = (function(global) {
 						+'>>',
 					'CIDToGIDMap': '/Identity',
 					'DW':1000,
-					'W': jaFontWidths[fontName],					
+					'W': jaFontWidths[fontName],
 					};
 
 				var type2FontKey = addFont(fontName, fontName.toLowerCase(), 'normal', false, 'CIDFontType2', attrs2);
-				addToFontDictionary(type2FontKey, fontName.toLowerCase(), 'normal' || ''); 
+				addToFontDictionary(type2FontKey, fontName.toLowerCase(), 'normal' || '');
 				var type2Font = fonts[type2FontKey];
 				type2Font.fontDescriptor = fontDescriptor;
 
@@ -760,10 +760,10 @@ var jsPDF = (function(global) {
 
 				// make a relationship with typeFont2
 				type0Font.type2Font = type2Font;
-				
+
 				addToFontDictionary(type0FontKey, fontName.toLowerCase(), 'normal' || '');
 			}
-			
+
 		},
 		SAFE = function __safeCall(fn) {
 			fn.foo = function __safeCallWrapper() {
@@ -1252,7 +1252,7 @@ var jsPDF = (function(global) {
 					}
 
 					saveAs(getBlob(), options);
-					
+
 					if(typeof saveAs.unload === 'function') {
 						if(global.setTimeout) {
 							setTimeout(saveAs.unload,911);
@@ -1469,14 +1469,14 @@ var jsPDF = (function(global) {
 
 			function hexEncode(st) {
 				var result = '';
-				
+
 				for ( var i = 0; i < st.length; i++ ) {
 					var hex = st.charCodeAt(i).toString(16);
 					result += ('000' + hex).slice(-4);
 				}
 				return result;
 			};
-			
+
 
 			// Pre-August-2012 the order of arguments was function(x, y, text, flags)
 			// in effort to make all calls have similar signature like
@@ -1525,7 +1525,7 @@ var jsPDF = (function(global) {
 			}
 
 			// ActiveFont
-			var activeFont = fonts[activeFontKey];			
+			var activeFont = fonts[activeFontKey];
 
 			flags = flags || {};
 			if (!('noBOM' in flags))
@@ -1551,22 +1551,20 @@ var jsPDF = (function(global) {
 			if (typeof this._runningPageHeight === 'undefined'){
 				this._runningPageHeight = 0;
 			}
-			
+
 			var jaFlag = (activeFont.fontType == 'Type0');
 
 			if (typeof text === 'string') {
-				console.log("text  === 'string'");
 				text = (jaFlag) ? hexEncode(text) : ESC(text);
 
 			} else if (text instanceof Array) {
-				console.log("text instanceof Array length = " + text.length);
 				
 				// we don't want to destroy  original text array, so cloning it
 				var sa = text.concat(), da = [], len = sa.length;
 				// we do array.join('text that must not be PDFescaped")
 				// thus, pdfEscape each component separately
 				while (len--) {
-					// for type1 font 
+					// for type1 font
 					da.push((jaFlag) ? hexEncode(sa.shift()) : ESC(sa.shift()));
 				}
 				var linesLeft = Math.ceil((pageHeight - y - this._runningPageHeight) * k / (activeFontSize * lineHeightProportion));
@@ -1605,7 +1603,7 @@ var jsPDF = (function(global) {
 						var delta = maxLineLength - lineWidths[i];
 						if( align === "center" ) delta /= 2;
 						// T* = x-offset leading Td ( text )
-						if (jaFlag) 
+						if (jaFlag)
 							text += ( ( left - prevX ) + delta ) + " -" + leading + " Td <" + da[i];
 						else
 							text += ( ( left - prevX ) + delta ) + " -" + leading + " Td (" + da[i];
@@ -1618,7 +1616,7 @@ var jsPDF = (function(global) {
 						}
 					}
 				} else {
-					text = (jaFlag) 
+					text = (jaFlag)
 						? da.join("> Tj\nT* <")
 						: da.join(") Tj\nT* (");
 				}
@@ -1649,9 +1647,9 @@ var jsPDF = (function(global) {
 //				this._runningPageHeight = y -  (activeFontSize * 1.7 / k);
 //				curY = f2(pageHeight - activeFontSize * 1.7 /k);
 //			}
-			
 
-			
+
+
 
 			if (activeFont.fontType == 'Type1') {
 				out(
@@ -1661,9 +1659,9 @@ var jsPDF = (function(global) {
 					strokeOption +// stroke option
 					textColor +
 					 '\n' + xtra + f2(x * k) + ' ' + curY + ' ' + mode + '\n(' +
-					 text + 
+					 text +
 					 ') Tj\nET');
-					
+
 			} else if (activeFont.fontType == 'Type0') {
 				out(
 					'BT\n/' +
@@ -2006,7 +2004,7 @@ var jsPDF = (function(global) {
 		 */
 		API.setFont = function(fontName, fontStyle) {
 			activeFontKey = getFont(fontName, fontStyle);
-			
+
 			// if font is not found, the above line blows up and we never go further
 			return this;
 		};
@@ -2345,7 +2343,7 @@ var jsPDF = (function(global) {
 		    	for (var i=1; i < pages.length; i++) {
 		    		// call a page process function
 		    		this.setPage(i);
-		    		processPerPage(i, pages.length-1);		    		
+		    		processPerPage(i, pages.length-1);
 		    	}
 		    return this;
 	     }
@@ -2434,7 +2432,7 @@ var jsPDF = (function(global) {
 	 * pdfdoc.mymethod() // <- !!!!!!
 	 */
 	jsPDF.API = {events:[]};
-	jsPDF.version = "1.2.271-debug 2016-09-27T14:35:rd";
+	jsPDF.version = "1.3.31-debug 2017-01-31T13:48:root";
 
 	if (typeof define === 'function' && define.amd) {
 		define('jsPDF', function() {
