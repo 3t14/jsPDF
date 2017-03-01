@@ -1672,6 +1672,7 @@ var jsPDF = (function(global) {
 					'\n' + xtra + f2(x * k) + ' ' + curY + ' ' + mode + '\n<' +
 					text + //*/hexEncode(text) +
 					'> Tj\nET');
+        console.log('text brefore > = ' + text);
 			}
 
 
