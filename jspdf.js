@@ -1598,7 +1598,10 @@ var jsPDF = (function(global) {
 						throw new Error('Unrecognized alignment option, use "center" or "right".');
 					}
 					prevX = x;
-					text = (jaFlag) ? da[0] + "> Tj\n" : da[0] + ") Tj\n";
+					text = (da.length > 1) 
+            ? (jaFlag) ? da[0] + "> Tj\n" : da[0] + ") Tj\n"
+            : da[0];
+          
 					for (var i = 1, len = da.length ; i < len; i++ ) {
 						var delta = maxLineLength - lineWidths[i];
 						if( align === "center" ) delta /= 2;

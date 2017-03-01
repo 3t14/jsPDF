@@ -1,7 +1,7 @@
 /** @preserve
  * jsPDF - PDF Document creation from JavaScript
- * Version 1.3.60-git Built on 2017-03-01T16:53
- *                           CommitID 9049272d4c
+ * Version 1.3.60-git Built on 2017-03-02T08:32
+ *                           CommitID 252a0e8cad
  *
  * Copyright (c) 2010-2014 James Hall <james@parall.ax>, https://github.com/MrRio/jsPDF
  *               2010 Aaron Spike, https://github.com/acspike
@@ -1598,7 +1598,10 @@ var jsPDF = (function(global) {
 						throw new Error('Unrecognized alignment option, use "center" or "right".');
 					}
 					prevX = x;
-					text = (jaFlag) ? da[0] + "> Tj\n" : da[0] + ") Tj\n";
+					text = (da.length > 1) 
+            ? (jaFlag) ? da[0] + "> Tj\n" : da[0] + ") Tj\n"
+            : da[0];
+          
 					for (var i = 1, len = da.length ; i < len; i++ ) {
 						var delta = maxLineLength - lineWidths[i];
 						if( align === "center" ) delta /= 2;
@@ -2433,7 +2436,7 @@ var jsPDF = (function(global) {
 	 * pdfdoc.mymethod() // <- !!!!!!
 	 */
 	jsPDF.API = {events:[]};
-	jsPDF.version = "1.3.60-debug 2017-03-01T16:53:root";
+	jsPDF.version = "1.3.60-debug 2017-03-02T08:32:rd";
 
 	if (typeof define === 'function' && define.amd) {
 		define('jsPDF', function() {
