@@ -1237,6 +1237,20 @@ var jsPDF = (function(global) {
 		 * @name output
 		 */
 		output = SAFE(function(type, options) {
+      // For Node.js
+      function btoa(binary) {
+        var isNode = (typeof process !== "undefined" && typeof require !== "undefined");
+        if (isNode) {
+          var buffer;
+          if (Buffer.isBuffer(binary)) {
+            buffer = binary;
+          }
+          else {
+            buffer = new Buffer(binary.toString(), 'binary');
+          }
+          return buffer.toString('base64');
+        } else return btoa(binary);
+      }
 			var datauri = ('' + type).substr(0,6) === 'dataur'
 				? 'data:application/pdf;base64,'+btoa(buildDocument()):0;
 

@@ -6,7 +6,8 @@
 #
 
 output=dist/jspdf.min.js
-options="-m -c --wrap --stats"
+#options="-m -c --wrap --stats"
+options="-m -c --wrap wrap --stats"
 version="`python -c 'import time;t=time.gmtime(time.time());print("1.%d.%d" % (t[0] - 2014, t[7]))'`"
 libs="`find libs/* -maxdepth 2 -type f | grep .js$ | grep -v -E '(\.min|BlobBuilder\.js$|Downloadify|demo|deps|test)'`"
 files="jspdf.js plugins/*js"
