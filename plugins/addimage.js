@@ -563,7 +563,14 @@
 					if(base64Info) {
 
 						format = base64Info[2];
-						imageData = atob(base64Info[3]);//convert to binary string
+            
+            // nodejsの場合
+            var isNode = (typeof process !== "undefined" && typeof require !== "undefined");
+            if (iNode) {
+              imageData = new Buffer(base64Info[3], 'base64').toString('binary');         
+            } else {
+						  imageData = atob(base64Info[3]);//convert to binary string
+            }
 
 					} else {
 
