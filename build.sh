@@ -46,7 +46,7 @@ cat ${files} ${libs} \
 	| sed s/\${commitID}/${commit}/ \
 	| sed "s/\"1\.0\.0-trunk\"/\"${version}-debug ${build}:${whoami}\"/" >${output/min/debug}
 uglifyjs ${options} -o ${output} ${files} ${libs}
-
+echo ${libs}
 # Pretend license information to minimized file
 for fn in ${files} ${libs}; do
 	awk '/^\/\*/,/\*\//' $fn \
