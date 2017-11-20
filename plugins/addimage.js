@@ -567,13 +567,13 @@
             // nodejsの場合
             var isNode = (typeof process !== "undefined" && typeof require !== "undefined");
             if (isNode) {
-              console.log(base64Info[3]);
+              //console.log(base64Info[3]);
               imageData = new Buffer(base64Info[3], 'base64').toString('binary');
-              console.log(imageData);
+              //console.log(imageData);
               var fs = require('fs');
               var data = "write text test!";
               fs.writeFile('writetest.jpg', imageData , function (err) {
-                  console.log(err);
+                  //console.log(err);
               });
             } else {
 						  imageData = atob(base64Info[3]);//convert to binary string
@@ -600,8 +600,11 @@
 				 * to TypedArray - or should we just leave and process as string?
 				 */
 				if(this.supportsArrayBuffer()) {
-					dataAsBinaryString = imageData;
-					imageData = this.binaryStringToUint8Array(imageData);
+					// no need to convert if imageData is already uint8array
+					if(!(imageData instanceof Uint8Array)){
+						dataAsBinaryString = imageData;
+						imageData = this.binaryStringToUint8Array(imageData);
+					}
 				}
 
 				info = this['process' + format.toUpperCase()](

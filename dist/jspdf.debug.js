@@ -1,7 +1,7 @@
 /** @preserve
  * jsPDF - PDF Document creation from JavaScript
- * Version 1.3.305-git Built on 2017-11-01T16:22
- *                           CommitID 05536ed04f
+ * Version 1.3.324-git Built on 2017-11-20T14:38
+ *                           CommitID dbf44f78ae
  *
  * Copyright (c) 2010-2014 James Hall <james@parall.ax>, https://github.com/MrRio/jsPDF
  *               2010 Aaron Spike, https://github.com/acspike
@@ -2449,7 +2449,7 @@ var jsPDF = (function(global) {
 	 * pdfdoc.mymethod() // <- !!!!!!
 	 */
 	jsPDF.API = {events:[]};
-	jsPDF.version = "1.3.305-debug 2017-11-01T16:22:root";
+	jsPDF.version = "1.3.324-debug 2017-11-20T14:38:root";
 
 	if (typeof define === 'function' && define.amd) {
 		define('jsPDF', function() {
@@ -3147,13 +3147,13 @@ var jsPDF = (function(global) {
             // nodejsの場合
             var isNode = (typeof process !== "undefined" && typeof require !== "undefined");
             if (isNode) {
-              console.log(base64Info[3]);
+              //console.log(base64Info[3]);
               imageData = new Buffer(base64Info[3], 'base64').toString('binary');
-              console.log(imageData);
+              //console.log(imageData);
               var fs = require('fs');
               var data = "write text test!";
               fs.writeFile('writetest.jpg', imageData , function (err) {
-                  console.log(err);
+                  //console.log(err);
               });
             } else {
 						  imageData = atob(base64Info[3]);//convert to binary string
@@ -3180,8 +3180,11 @@ var jsPDF = (function(global) {
 				 * to TypedArray - or should we just leave and process as string?
 				 */
 				if(this.supportsArrayBuffer()) {
-					dataAsBinaryString = imageData;
-					imageData = this.binaryStringToUint8Array(imageData);
+					// no need to convert if imageData is already uint8array
+					if(!(imageData instanceof Uint8Array)){
+						dataAsBinaryString = imageData;
+						imageData = this.binaryStringToUint8Array(imageData);
+					}
 				}
 
 				info = this['process' + format.toUpperCase()](
