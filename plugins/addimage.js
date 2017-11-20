@@ -560,7 +560,7 @@
           var tmp = imageData.substr(23);
           console.log(tmp);
 					var base64Info = this.extractInfoFromBase64DataURI(imageData);
-          if (imageData == base64Info[3])
+          if (tmp == base64Info[3])
             console.log("same");
           else console.log("different");
 					if(base64Info) {
