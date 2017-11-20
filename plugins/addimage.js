@@ -567,7 +567,7 @@
             // nodejsの場合
             var isNode = (typeof process !== "undefined" && typeof require !== "undefined");
             if (isNode) {
-              //console.log(base64Info[3]);
+              console.log(base64Info);
               imageData = new Buffer(base64Info[3], 'base64').toString('binary');
               //console.log(imageData);
               var fs = require('fs');
