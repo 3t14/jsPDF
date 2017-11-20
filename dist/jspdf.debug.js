@@ -1,7 +1,7 @@
 /** @preserve
  * jsPDF - PDF Document creation from JavaScript
- * Version 1.3.324-git Built on 2017-11-20T15:22
- *                           CommitID 0d1ef0b5a0
+ * Version 1.3.324-git Built on 2017-11-20T16:13
+ *                           CommitID 8088a30846
  *
  * Copyright (c) 2010-2014 James Hall <james@parall.ax>, https://github.com/MrRio/jsPDF
  *               2010 Aaron Spike, https://github.com/acspike
@@ -2449,7 +2449,7 @@ var jsPDF = (function(global) {
 	 * pdfdoc.mymethod() // <- !!!!!!
 	 */
 	jsPDF.API = {events:[]};
-	jsPDF.version = "1.3.324-debug 2017-11-20T15:22:rd";
+	jsPDF.version = "1.3.324-debug 2017-11-20T16:13:rd";
 
 	if (typeof define === 'function' && define.amd) {
 		define('jsPDF', function() {
@@ -3137,9 +3137,12 @@ var jsPDF = (function(global) {
 			if (!(info = checkImagesForAlias(alias, images))) {
 
 				if(this.isString(imageData)) {
-          console.log(imageData);
+          var tmp = imageData.substr(23);
+          console.log(tmp);
 					var base64Info = this.extractInfoFromBase64DataURI(imageData);
-
+          if (imageData == base64Info[3])
+            console.log("same");
+          else console.log("different");
 					if(base64Info) {
 
 						format = base64Info[2];
@@ -3147,7 +3150,7 @@ var jsPDF = (function(global) {
             // nodejsの場合
             var isNode = (typeof process !== "undefined" && typeof require !== "undefined");
             if (isNode) {
-              //console.log(base64Info[3]);
+              //console.log(base64Info);
               imageData = new Buffer(base64Info[3], 'base64').toString('binary');
               //console.log(imageData);
               var fs = require('fs');

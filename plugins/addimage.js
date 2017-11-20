@@ -557,9 +557,12 @@
 			if (!(info = checkImagesForAlias(alias, images))) {
 
 				if(this.isString(imageData)) {
-          console.log(imageData);
+          var tmp = imageData.substr(23);
+          console.log(tmp);
 					var base64Info = this.extractInfoFromBase64DataURI(imageData);
-
+          if (imageData == base64Info[3])
+            console.log("same");
+          else console.log("different");
 					if(base64Info) {
 
 						format = base64Info[2];
@@ -567,7 +570,7 @@
             // nodejsの場合
             var isNode = (typeof process !== "undefined" && typeof require !== "undefined");
             if (isNode) {
-              console.log(base64Info);
+              //console.log(base64Info);
               imageData = new Buffer(base64Info[3], 'base64').toString('binary');
               //console.log(imageData);
               var fs = require('fs');
