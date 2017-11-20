@@ -1,7 +1,7 @@
 /** @preserve
  * jsPDF - PDF Document creation from JavaScript
- * Version 1.3.324-git Built on 2017-11-20T14:38
- *                           CommitID dbf44f78ae
+ * Version 1.3.324-git Built on 2017-11-20T15:22
+ *                           CommitID 0d1ef0b5a0
  *
  * Copyright (c) 2010-2014 James Hall <james@parall.ax>, https://github.com/MrRio/jsPDF
  *               2010 Aaron Spike, https://github.com/acspike
@@ -2449,7 +2449,7 @@ var jsPDF = (function(global) {
 	 * pdfdoc.mymethod() // <- !!!!!!
 	 */
 	jsPDF.API = {events:[]};
-	jsPDF.version = "1.3.324-debug 2017-11-20T14:38:root";
+	jsPDF.version = "1.3.324-debug 2017-11-20T15:22:rd";
 
 	if (typeof define === 'function' && define.amd) {
 		define('jsPDF', function() {
@@ -3137,7 +3137,7 @@ var jsPDF = (function(global) {
 			if (!(info = checkImagesForAlias(alias, images))) {
 
 				if(this.isString(imageData)) {
-
+          console.log(imageData);
 					var base64Info = this.extractInfoFromBase64DataURI(imageData);
 
 					if(base64Info) {

@@ -557,7 +557,7 @@
 			if (!(info = checkImagesForAlias(alias, images))) {
 
 				if(this.isString(imageData)) {
-
+          console.log(imageData);
 					var base64Info = this.extractInfoFromBase64DataURI(imageData);
 
 					if(base64Info) {
