@@ -570,14 +570,8 @@
             // nodejsの場合
             var isNode = (typeof process !== "undefined" && typeof require !== "undefined");
             if (isNode) {
-              //console.log(base64Info);
-              imageData = new Buffer(base64Info[3], 'base64').toString('binary');
-              //console.log(imageData);
-              var fs = require('fs');
-              var data = "write text test!";
-              fs.writeFile('writetest.jpg', imageData , function (err) {
-                  //console.log(err);
-              });
+              //imageData = new Buffer(base64Info[3], 'base64').toString('binary');
+              imageData = new Buffer(base64Info[3], 'base64'); 
             } else {
 						  imageData = atob(base64Info[3]);//convert to binary string
             }
